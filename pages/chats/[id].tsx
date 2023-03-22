@@ -3,7 +3,7 @@ import type { NextPage } from 'next';
 const ChatDetail: NextPage = () => {
   return (
     <div className='flex flex-col'>
-      <div className=' h-[calc(100vh_-_40px)] space-y-4 overflow-scroll py-10 px-4'>
+      <div className=' h-[90vh] space-y-4 overflow-scroll py-10 px-4'>
         {/* chat bubbles */}
         <div className='flex items-start space-x-2'>
           <div className='h-8 w-8 rounded-full border bg-slate-400' />
@@ -88,7 +88,7 @@ const ChatDetail: NextPage = () => {
       </div>
 
       {/* input */}
-      <div className='fixed inset-x-0 bottom-4 mx-auto w-full max-w-md px-2 '>
+      <div className='fixed inset-x-0 bottom-0 mx-auto w-full max-w-md py-4 px-2 pt-4 '>
         <div className='relative flex items-center'>
           <input
             type='text'
