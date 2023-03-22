@@ -1,5 +1,6 @@
 import { joinClassName } from '@/libs/utils';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 interface LayoutProps {
   title?: string;
@@ -9,15 +10,34 @@ interface LayoutProps {
 }
 
 export default function Layout({ title, canGoBack, hasTabBar, children }: LayoutProps) {
+  const router = useRouter();
+  const goToBack = () => {
+    router.back();
+  };
+
   return (
-    <div>
-      <div className='fixed top-0 flex w-full max-w-xl items-center justify-center border-b bg-white py-3 text-lg font-medium text-gray-700 shadow-sm'>
+    <div className='relative'>
+      <div className='fixed top-0 flex h-14 w-full max-w-xl items-center justify-center border-b bg-white px-6 text-lg font-medium text-gray-700 shadow-sm'>
+        {canGoBack && (
+          <button onClick={goToBack} className='absolute left-4'>
+            <svg
+              className='h-6 w-6'
+              fill='none'
+              stroke='currentColor'
+              strokeWidth={1.5}
+              viewBox='0 0 24 24'
+              xmlns='http://www.w3.org/2000/svg'
+              aria-hidden='true'>
+              <path strokeLinecap='round' strokeLinejoin='round' d='M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18' />
+            </svg>
+          </button>
+        )}
         {title ? <span className='font-bold'>{title}</span> : null}
       </div>
       <div className={joinClassName('pt-8', hasTabBar ? 'pb-16' : '')}>{children}</div>
       {hasTabBar && (
         <nav className='fixed bottom-0 flex w-full max-w-xl justify-between border-t bg-white px-8 pb-5 pt-3 text-xs text-gray-700'>
-          <Link href='/' legacyBehavior>
+          <Link href='/items' legacyBehavior>
             <a className='flex flex-col items-center space-y-2'>
               <svg className='h-6 w-6' fill='none' stroke='currentColor' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>
                 <path
