@@ -40,7 +40,7 @@ const Home: NextPage = () => {
           </div>
         </div>
       ))}
-      <button className='fixed  right-5 bottom-24 rounded-full bg-orange-400 p-4 text-white shadow-xl transition-colors hover:bg-orange-500'>
+      <button className='fixed  right-5 bottom-10 rounded-full bg-orange-400 p-4 text-white shadow-xl transition-colors hover:bg-orange-500'>
         <svg
           className='h-6 w-6'
           xmlns='http://www.w3.org/2000/svg'
