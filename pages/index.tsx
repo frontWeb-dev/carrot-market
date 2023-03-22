@@ -3,7 +3,7 @@ import type { NextPage } from 'next';
 
 const Home: NextPage = () => {
   return (
-    <Layout title='Home' hasTabBar>
+    <Layout title='캐럿 마켓' hasTabBar>
       <div className='flex flex-col space-y-5 py-10'>
         {[...Array(10)].map((_, i) => (
           <div key={i} className='flex cursor-pointer  justify-between border-b px-4 pb-4'>
@@ -42,7 +42,8 @@ const Home: NextPage = () => {
             </div>
           </div>
         ))}
-        <button className='fixed  right-5 bottom-10 rounded-full bg-orange-400 p-4 text-white shadow-xl transition-colors hover:bg-orange-500'>
+
+        <button className='fixed right-5 bottom-24 rounded-full bg-orange-400 p-4 text-white shadow-xl transition-colors hover:bg-orange-500'>
           <svg
             className='h-6 w-6'
             xmlns='http://www.w3.org/2000/svg'
