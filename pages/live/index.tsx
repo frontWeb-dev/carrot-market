@@ -1,3 +1,4 @@
+import FloatingButton from '@/components/floatingButton';
 import Layout from '@/components/layout';
 import type { NextPage } from 'next';
 import Link from 'next/link';
@@ -5,18 +6,18 @@ import Link from 'next/link';
 const Live: NextPage = () => {
   return (
     <Layout title='라이브' hasTabBar>
-      <div className='space-y-4 divide-y-2 py-10'>
+      <div className='space-y-4 divide-y-2 pb-5'>
         {[...Array(6)].map((_, i) => (
           <Link key={i} href={`/live/${i + 1}`}>
-            <div className='px-4 pt-4'>
+            <div className='p-4'>
               {/* aspect-video : 비디오 비율 지정 (16:9) */}
               <div className='aspect-video w-full rounded-md bg-slate-300 shadow-sm'></div>
               <h3 className='mt-2 text-lg  text-gray-700'>Let&apos;s try potatos</h3>
             </div>
           </Link>
         ))}
-        <Link href='/live/create'>
-          <button className='fixed  right-5 bottom-24 rounded-full border-transparent bg-orange-400 p-4 text-white shadow-xl transition-colors hover:bg-orange-500'>
+        <FloatingButton href='/live/create'>
+          <button className='rounded-full  bg-orange-400 p-4 text-white shadow-xl transition-colors hover:bg-orange-500'>
             <svg
               className='h-6 w-6 text-white'
               fill='none'
@@ -31,7 +32,7 @@ const Live: NextPage = () => {
               />
             </svg>
           </button>
-        </Link>
+        </FloatingButton>
       </div>
     </Layout>
   );

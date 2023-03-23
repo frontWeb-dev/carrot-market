@@ -1,14 +1,15 @@
-import Layout from '@/components/layout';
 import type { NextPage } from 'next';
 import Link from 'next/link';
+import Layout from '@/components/layout';
+import FloatingButton from '@/components/floatingButton';
 
 const Community: NextPage = () => {
   return (
     <Layout title='동네 생활' hasTabBar>
-      <div className='space-y-8 py-10 px-4'>
+      <div className='space-y-8 py-5'>
         {[...Array(6)].map((_, i) => (
           <Link key={i} href={`/community/${i + 1}`}>
-            <div className='flex cursor-pointer flex-col items-start '>
+            <div className='mb-4 flex cursor-pointer flex-col items-start px-4'>
               <span className='flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-semibold text-gray-600'>동네질문</span>
 
               <div className='mt-2 text-gray-700'>
@@ -43,17 +44,15 @@ const Community: NextPage = () => {
             </div>
           </Link>
         ))}
-        <Link href='/community/write'>
-          <button className='fixed  right-5 bottom-24 rounded-full bg-orange-400 p-4 text-white shadow-xl transition-colors hover:bg-orange-500'>
-            <svg className='h-6 w-6' fill='none' stroke='currentColor' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                strokeWidth='2'
-                d='M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z'></path>
-            </svg>
-          </button>
-        </Link>
+        <FloatingButton href='/community/write'>
+          <svg className='h-6 w-6' fill='none' stroke='currentColor' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>
+            <path
+              strokeLinecap='round'
+              strokeLinejoin='round'
+              strokeWidth='2'
+              d='M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z'></path>
+          </svg>
+        </FloatingButton>
       </div>
     </Layout>
   );

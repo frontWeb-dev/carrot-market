@@ -1,11 +1,11 @@
-import Layout from '@/components/layout';
 import type { NextPage } from 'next';
+import Layout from '../../components/layout';
+import TextArea from '../../components/textarea';
 
 const CommunityPostDetail: NextPage = () => {
   return (
     <Layout canGoBack>
-      <div className='pt-6 pb-4'>
-        {/* bedge & profile  */}
+      <div>
         <span className='my-3 ml-4 inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800'>
           동네질문
         </span>
@@ -16,8 +16,6 @@ const CommunityPostDetail: NextPage = () => {
             <p className='text-xs font-medium text-gray-500'>View profile &rarr;</p>
           </div>
         </div>
-
-        {/* question */}
         <div>
           <div className='mt-2 px-4 text-gray-700'>
             <span className='font-medium text-orange-500'>Q.</span> What is the best mandu restaurant?
@@ -41,28 +39,18 @@ const CommunityPostDetail: NextPage = () => {
             </span>
           </div>
         </div>
-
-        {/* answer */}
-        {[...Array(3)].map((_, i) => (
-          <div key={i} className='my-5 space-y-5 px-4'>
-            <div className='flex items-start space-x-3'>
-              <div className='h-8 w-8 rounded-full bg-slate-200' />
-              <div>
-                <span className='block text-sm font-medium text-gray-700'>Steve Jebs</span>
-                <span className='block text-xs text-gray-500 '>2시간 전</span>
-                <p className='mt-2 text-gray-700'>The best mandu restaurant is the one next to my house.</p>
-              </div>
+        <div className='my-5 space-y-5 px-4'>
+          <div className='flex flex-nowrap items-start space-x-3'>
+            <div className='h-8 w-8 rounded-full bg-slate-200' />
+            <div className='w-[90%]'>
+              <span className='block text-sm font-medium text-gray-700'>Steve Jebs</span>
+              <span className='block text-xs text-gray-500 '>2시간 전</span>
+              <p className='mt-2 text-sm text-gray-700'>The best mandu restaurant is the one next to my house.</p>
             </div>
           </div>
-        ))}
-
-        {/* submit */}
+        </div>
         <div className='px-4'>
-          <textarea
-            className='mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 '
-            rows={4}
-            placeholder='Answer this question!'
-          />
+          <TextArea name='description' placeholder='Answer this question!' required />
           <button className='mt-2 w-full rounded-md border border-transparent bg-orange-500 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 '>
             Reply
           </button>
