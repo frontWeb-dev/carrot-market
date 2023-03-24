@@ -28,23 +28,34 @@ export default function Layout({ title, canGoBack, hasTabBar, children }: Layout
               viewBox='0 0 24 24'
               xmlns='http://www.w3.org/2000/svg'
               aria-hidden='true'>
-              <path strokeLinecap='round' strokeLinejoin='round' d='M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18' />
+              <path
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                d='M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18'
+              />
             </svg>
           </button>
         )}
         {title ? <span className='font-bold'>{title}</span> : null}
       </div>
-      <div className={joinClassName('mt-14 w-full max-w-md', hasTabBar ? 'pb-16' : '')}>{children}</div>
+      <div className={joinClassName('mt-14 w-full max-w-md', hasTabBar ? 'pb-16' : '')}>
+        {children}
+      </div>
 
       {hasTabBar && (
         <nav className='fixed bottom-0 flex w-full max-w-md justify-between border-t bg-white px-8 pb-5 pt-3 text-xs text-gray-700'>
           <Link
-            href='/items'
+            href='/'
             className={joinClassName(
               'flex flex-col items-center space-y-2 ',
-              router.pathname === '/items' ? 'text-orange-500' : 'transition-colors hover:text-gray-500'
+              router.pathname === '/' ? 'text-orange-500' : 'transition-colors hover:text-gray-500'
             )}>
-            <svg className='h-6 w-6' fill='none' stroke='currentColor' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>
+            <svg
+              className='h-6 w-6'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+              xmlns='http://www.w3.org/2000/svg'>
               <path
                 strokeLinecap='round'
                 strokeLinejoin='round'
@@ -57,9 +68,16 @@ export default function Layout({ title, canGoBack, hasTabBar, children }: Layout
             href='/community'
             className={joinClassName(
               'flex flex-col items-center space-y-2 ',
-              router.pathname === '/community' ? 'text-orange-500' : 'transition-colors hover:text-gray-500'
+              router.pathname === '/community'
+                ? 'text-orange-500'
+                : 'transition-colors hover:text-gray-500'
             )}>
-            <svg className='h-6 w-6' fill='none' stroke='currentColor' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>
+            <svg
+              className='h-6 w-6'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+              xmlns='http://www.w3.org/2000/svg'>
               <path
                 strokeLinecap='round'
                 strokeLinejoin='round'
@@ -72,9 +90,16 @@ export default function Layout({ title, canGoBack, hasTabBar, children }: Layout
             href='/chats'
             className={joinClassName(
               'flex flex-col items-center space-y-2 ',
-              router.pathname === '/chats' ? 'text-orange-500' : 'transition-colors hover:text-gray-500'
+              router.pathname === '/chats'
+                ? 'text-orange-500'
+                : 'transition-colors hover:text-gray-500'
             )}>
-            <svg className='h-6 w-6' fill='none' stroke='currentColor' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>
+            <svg
+              className='h-6 w-6'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+              xmlns='http://www.w3.org/2000/svg'>
               <path
                 strokeLinecap='round'
                 strokeLinejoin='round'
@@ -87,9 +112,16 @@ export default function Layout({ title, canGoBack, hasTabBar, children }: Layout
             href='/live'
             className={joinClassName(
               'flex flex-col items-center space-y-2 ',
-              router.pathname === '/live' ? 'text-orange-500' : 'transition-colors hover:text-gray-500'
+              router.pathname === '/live'
+                ? 'text-orange-500'
+                : 'transition-colors hover:text-gray-500'
             )}>
-            <svg className='h-6 w-6' fill='none' stroke='currentColor' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>
+            <svg
+              className='h-6 w-6'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+              xmlns='http://www.w3.org/2000/svg'>
               <path
                 strokeLinecap='round'
                 strokeLinejoin='round'
@@ -102,9 +134,16 @@ export default function Layout({ title, canGoBack, hasTabBar, children }: Layout
             href='/profile'
             className={joinClassName(
               'flex flex-col items-center space-y-2 ',
-              router.pathname === '/profile' ? 'text-orange-500' : 'transition-colors hover:text-gray-500'
+              router.pathname === '/profile'
+                ? 'text-orange-500'
+                : 'transition-colors hover:text-gray-500'
             )}>
-            <svg className='h-6 w-6' fill='none' stroke='currentColor' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>
+            <svg
+              className='h-6 w-6'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+              xmlns='http://www.w3.org/2000/svg'>
               <path
                 strokeLinecap='round'
                 strokeLinejoin='round'
