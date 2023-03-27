@@ -1,10 +1,10 @@
 import { NextPage } from 'next';
-import { joinClassName } from '@/libs/client/utils';
+import { joinClassName } from '@libs/client/utils';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import Input from '@/components/input';
-import Button from './../components/button';
-import useMutation from './../libs/client/useMutation';
+import Input from '@components/input';
+import Button from '@components/button';
+import useMutation from '@libs/client/useMutation';
 
 interface EnterProps {
   email?: string;

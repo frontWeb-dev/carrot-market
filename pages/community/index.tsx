@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import Link from 'next/link';
-import Layout from '@/components/layout';
-import FloatingButton from '@/components/floatingButton';
+import Layout from '@components/layout';
+import FloatingButton from '@components/floatingButton';
 
 const Community: NextPage = () => {
   return (
@@ -10,10 +10,13 @@ const Community: NextPage = () => {
         {[...Array(6)].map((_, i) => (
           <Link key={i} href={`/community/${i + 1}`}>
             <div className='mb-4 flex cursor-pointer flex-col items-start px-4'>
-              <span className='flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-semibold text-gray-600'>동네질문</span>
+              <span className='flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-semibold text-gray-600'>
+                동네질문
+              </span>
 
               <div className='mt-2 text-gray-700'>
-                <span className='font-semibold text-orange-500'>Q.</span> What is the best mandu restaurant?
+                <span className='font-semibold text-orange-500'>Q.</span> What is the best mandu
+                restaurant?
               </div>
               <div className='mt-5 flex w-full items-center justify-between text-xs font-semibold text-gray-500'>
                 <span>니꼬</span>
@@ -21,7 +24,12 @@ const Community: NextPage = () => {
               </div>
               <div className='mt-3 flex w-full space-x-5 border-b-[1.5px] border-t py-2.5 text-gray-700'>
                 <span className='flex items-center space-x-2 text-sm'>
-                  <svg className='h-4 w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>
+                  <svg
+                    className='h-4 w-4'
+                    fill='none'
+                    stroke='currentColor'
+                    viewBox='0 0 24 24'
+                    xmlns='http://www.w3.org/2000/svg'>
                     <path
                       strokeLinecap='round'
                       strokeLinejoin='round'
@@ -31,7 +39,12 @@ const Community: NextPage = () => {
                   <span>궁금해요 1</span>
                 </span>
                 <span className='flex items-center space-x-2 text-sm'>
-                  <svg className='h-4 w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>
+                  <svg
+                    className='h-4 w-4'
+                    fill='none'
+                    stroke='currentColor'
+                    viewBox='0 0 24 24'
+                    xmlns='http://www.w3.org/2000/svg'>
                     <path
                       strokeLinecap='round'
                       strokeLinejoin='round'
@@ -45,7 +58,12 @@ const Community: NextPage = () => {
           </Link>
         ))}
         <FloatingButton href='/community/write'>
-          <svg className='h-6 w-6' fill='none' stroke='currentColor' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>
+          <svg
+            className='h-6 w-6'
+            fill='none'
+            stroke='currentColor'
+            viewBox='0 0 24 24'
+            xmlns='http://www.w3.org/2000/svg'>
             <path
               strokeLinecap='round'
               strokeLinejoin='round'

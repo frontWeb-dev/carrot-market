@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
-import Layout from '../../components/layout';
-import TextArea from '../../components/textarea';
+import Layout from '@components/layout';
+import TextArea from '@components/textarea';
 
 const CommunityPostDetail: NextPage = () => {
   return (
@@ -18,17 +18,32 @@ const CommunityPostDetail: NextPage = () => {
         </div>
         <div>
           <div className='mt-2 px-4 text-gray-700'>
-            <span className='font-medium text-orange-500'>Q.</span> What is the best mandu restaurant?
+            <span className='font-medium text-orange-500'>Q.</span> What is the best mandu
+            restaurant?
           </div>
           <div className='mt-3 flex w-full space-x-5 border-t border-b-[2px] px-4 py-2.5  text-gray-700'>
             <span className='flex items-center space-x-2 text-sm'>
-              <svg className='h-4 w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>
-                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'></path>
+              <svg
+                className='h-4 w-4'
+                fill='none'
+                stroke='currentColor'
+                viewBox='0 0 24 24'
+                xmlns='http://www.w3.org/2000/svg'>
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth='2'
+                  d='M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'></path>
               </svg>
               <span>궁금해요 1</span>
             </span>
             <span className='flex items-center space-x-2 text-sm'>
-              <svg className='h-4 w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>
+              <svg
+                className='h-4 w-4'
+                fill='none'
+                stroke='currentColor'
+                viewBox='0 0 24 24'
+                xmlns='http://www.w3.org/2000/svg'>
                 <path
                   strokeLinecap='round'
                   strokeLinejoin='round'
@@ -45,7 +60,9 @@ const CommunityPostDetail: NextPage = () => {
             <div className='w-[90%]'>
               <span className='block text-sm font-medium text-gray-700'>Steve Jebs</span>
               <span className='block text-xs text-gray-500 '>2시간 전</span>
-              <p className='mt-2 text-sm text-gray-700'>The best mandu restaurant is the one next to my house.</p>
+              <p className='mt-2 text-sm text-gray-700'>
+                The best mandu restaurant is the one next to my house.
+              </p>
             </div>
           </div>
         </div>

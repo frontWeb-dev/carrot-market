@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import Link from 'next/link';
-import Layout from '../../components/layout';
+import Layout from '@components/layout';
 
 const Profile: NextPage = () => {
   return (
@@ -18,7 +18,12 @@ const Profile: NextPage = () => {
         <div className='mt-10 flex justify-around'>
           <Link href='/profile/sold' className='flex flex-col items-center'>
             <div className='flex h-14 w-14 items-center justify-center rounded-full bg-orange-400 text-white'>
-              <svg className='h-6 w-6' fill='none' stroke='currentColor' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>
+              <svg
+                className='h-6 w-6'
+                fill='none'
+                stroke='currentColor'
+                viewBox='0 0 24 24'
+                xmlns='http://www.w3.org/2000/svg'>
                 <path
                   strokeLinecap='round'
                   strokeLinejoin='round'
@@ -30,15 +35,29 @@ const Profile: NextPage = () => {
           </Link>
           <Link href='/profile/bought' className='flex flex-col items-center'>
             <div className='flex h-14 w-14 items-center justify-center rounded-full bg-orange-400 text-white'>
-              <svg className='h-6 w-6' fill='none' stroke='currentColor' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>
-                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z'></path>
+              <svg
+                className='h-6 w-6'
+                fill='none'
+                stroke='currentColor'
+                viewBox='0 0 24 24'
+                xmlns='http://www.w3.org/2000/svg'>
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth='2'
+                  d='M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z'></path>
               </svg>
             </div>
             <span className='mt-2 text-sm font-medium text-gray-700'>구매내역</span>
           </Link>
           <Link href='/profile/liked' className='flex flex-col items-center'>
             <div className='flex h-14 w-14 items-center justify-center rounded-full bg-orange-400 text-white'>
-              <svg className='h-6 w-6' fill='none' stroke='currentColor' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>
+              <svg
+                className='h-6 w-6'
+                fill='none'
+                stroke='currentColor'
+                viewBox='0 0 24 24'
+                xmlns='http://www.w3.org/2000/svg'>
                 <path
                   strokeLinecap='round'
                   strokeLinejoin='round'
@@ -100,10 +119,11 @@ const Profile: NextPage = () => {
           </div>
           <div className='mt-4 text-sm text-gray-600'>
             <p>
-              Normally, both your asses would be dead as fucking fried chicken, but you happen to pull this shit while I&apos;m in a
-              transitional period so I don&apos;t wanna kill you, I wanna help you. But I can&apos;t give you this case, it don&apos;t
-              belong to me. Besides, I&apos;ve already been through too much shit this morning over this case to hand it over to your dumb
-              ass.
+              Normally, both your asses would be dead as fucking fried chicken, but you happen to
+              pull this shit while I&apos;m in a transitional period so I don&apos;t wanna kill you,
+              I wanna help you. But I can&apos;t give you this case, it don&apos;t belong to me.
+              Besides, I&apos;ve already been through too much shit this morning over this case to
+              hand it over to your dumb ass.
             </p>
           </div>
         </div>

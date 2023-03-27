@@ -1,4 +1,4 @@
-import Layout from '@/components/layout';
+import Layout from '@components/layout';
 import type { NextPage } from 'next';
 import Link from 'next/link';
 

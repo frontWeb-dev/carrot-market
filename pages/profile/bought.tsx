@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
-import Item from '@/components/items';
-import Layout from '@/components/layout';
 import Link from 'next/link';
+import Item from '@components/items';
+import Layout from '@components/layout';
 
 const Bought: NextPage = () => {
   return (

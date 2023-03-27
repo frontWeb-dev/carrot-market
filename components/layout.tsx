@@ -1,4 +1,4 @@
-import { joinClassName } from '@/libs/client/utils';
+import { joinClassName } from '@libs/client/utils';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
