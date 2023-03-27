@@ -1,10 +1,35 @@
-import { joinClassName } from '@/libs/utils';
+import { NextPage } from 'next';
+import { joinClassName } from '@/libs/client/utils';
 import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import Input from '@/components/input';
+import Button from './../components/button';
+import useMutation from './../libs/client/useMutation';
 
-export default function Enter() {
+interface EnterProps {
+  email?: string;
+  phone?: string;
+}
+
+const Enter: NextPage = () => {
+  const [enter, { loading, data, error }] = useMutation('/api/user/enter');
+  const [submitting, setSubmitting] = useState(false);
   const [method, setMethod] = useState<'email' | 'phone'>('email');
-  const onEmailClick = () => setMethod('email');
-  const onPhoneClick = () => setMethod('phone');
+  const { register, reset, handleSubmit } = useForm<EnterProps>();
+  const onEmailClick = () => {
+    reset();
+    setMethod('email');
+  };
+  const onPhoneClick = () => {
+    reset();
+    setMethod('phone');
+  };
+
+  const onValid = (validForm: EnterProps) => {
+    enter(validForm);
+  };
+  console.log(loading, data, error);
+
   return (
     <div className='mt-16 px-4'>
       <h3 className='text-center text-3xl font-bold'>Enter to Carrot</h3>
@@ -35,42 +60,34 @@ export default function Enter() {
         </div>
 
         {/* form */}
-        <form className='mt-8 flex flex-col'>
-          <label htmlFor='input' className='text-sm font-medium text-gray-700'>
-            {method === 'email' ? 'Email address' : null}
-            {method === 'phone' ? 'Phone number' : null}
-          </label>
-
+        <form onSubmit={handleSubmit(onValid)} className='mt-8 flex flex-col space-y-4'>
           {/* input */}
-          <div className='mt-1'>
-            {method === 'email' ? (
-              <input
-                id='input'
-                type='email'
-                className='placeholdergray-400 focus:ouline-none w-full appearance-none rounded-md border-gray-300 px-3 py-2 shadow-sm focus:border-orange-500 focus:ring-orange-500'
-                required
-              />
-            ) : null}
-            {method === 'phone' ? (
-              <div className='flex rounded-md shadow-sm'>
-                <span className='border-right-0 flex select-none items-center justify-center rounded-l-md border border-gray-300 bg-gray-50 px-3 text-sm text-gray-500'>
-                  +82
-                </span>
-                <input
-                  id='input'
-                  type='number'
-                  className='placeholdergray-400 focus:ouline-none w-full appearance-none rounded-r-md border-gray-300 px-4 py-2 shadow-sm focus:border-orange-500 focus:ring-orange-500'
-                  required
-                />
-              </div>
-            ) : null}
-          </div>
+          {method === 'email' ? (
+            <Input
+              register={register('email', { required: true })}
+              name='email'
+              label='Email address'
+              type='email'
+              kind='text'
+              required
+            />
+          ) : null}
+          {method === 'phone' ? (
+            <Input
+              register={register('phone', { required: true })}
+              name='phone'
+              label='Phone number'
+              type='number'
+              kind='phone'
+              required
+            />
+          ) : null}
 
           {/* submit button */}
-          <button className='mt-5 rounded-md border border-transparent bg-orange-500 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2'>
+          <Button text={submitting ? 'Loading' : 'Get one-time password'}>
             {method === 'email' ? 'Get login link' : null}
             {method === 'phone' ? 'Get one-time password' : null}
-          </button>
+          </Button>
         </form>
 
         {/* Social Login */}
@@ -103,4 +120,6 @@ export default function Enter() {
       </div>
     </div>
   );
-}
+};
+
+export default Enter;

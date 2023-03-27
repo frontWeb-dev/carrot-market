@@ -1,11 +1,22 @@
+import type { UseFormRegisterReturn } from 'react-hook-form/dist/types';
+
 interface InputProps {
   label: string;
   name: string;
+  type: string;
   kind?: 'text' | 'phone' | 'price';
-  [key: string]: any;
+  register: UseFormRegisterReturn;
+  required: boolean;
 }
 
-export default function Input({ label, name, kind = 'text', ...rest }: InputProps) {
+export default function Input({
+  register,
+  label,
+  name,
+  kind = 'text',
+  type,
+  required,
+}: InputProps) {
   return (
     <div>
       <label className='mb-1 block text-sm font-medium text-gray-700' htmlFor={name}>
@@ -14,8 +25,10 @@ export default function Input({ label, name, kind = 'text', ...rest }: InputProp
       {kind === 'text' ? (
         <div className='relative flex items-center  rounded-md shadow-sm'>
           <input
+            {...register}
             id={name}
-            {...rest}
+            required={required}
+            type={type}
             className='w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-orange-500 focus:outline-none focus:ring-orange-500'
           />
         </div>
@@ -26,8 +39,10 @@ export default function Input({ label, name, kind = 'text', ...rest }: InputProp
             <span className='text-sm text-gray-500'>$</span>
           </div>
           <input
+            {...register}
             id={name}
-            {...rest}
+            required={required}
+            type={type}
             className='w-full appearance-none rounded-md border border-gray-300 px-3 py-2 pl-7 placeholder-gray-400 shadow-sm focus:border-orange-500 focus:outline-none focus:ring-orange-500'
           />
           <div className='pointer-events-none absolute right-0 flex items-center pr-3'>
@@ -41,8 +56,9 @@ export default function Input({ label, name, kind = 'text', ...rest }: InputProp
             +82
           </span>
           <input
+            {...register}
             id={name}
-            {...rest}
+            type={type}
             className='w-full appearance-none rounded-md rounded-l-none border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-orange-500 focus:outline-none focus:ring-orange-500'
           />
         </div>
