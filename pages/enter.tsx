@@ -13,7 +13,6 @@ interface EnterProps {
 
 const Enter: NextPage = () => {
   const [enter, { loading, data, error }] = useMutation('/api/user/enter');
-  const [submitting, setSubmitting] = useState(false);
   const [method, setMethod] = useState<'email' | 'phone'>('email');
   const { register, reset, handleSubmit } = useForm<EnterProps>();
   const onEmailClick = () => {
@@ -28,7 +27,6 @@ const Enter: NextPage = () => {
   const onValid = (validForm: EnterProps) => {
     enter(validForm);
   };
-  console.log(loading, data, error);
 
   return (
     <div className='mt-16 px-4'>
@@ -84,10 +82,10 @@ const Enter: NextPage = () => {
           ) : null}
 
           {/* submit button */}
-          <Button text={submitting ? 'Loading' : 'Get one-time password'}>
-            {method === 'email' ? 'Get login link' : null}
-            {method === 'phone' ? 'Get one-time password' : null}
-          </Button>
+          {method === 'email' ? <Button text={loading ? 'Loading' : 'Get login link'} /> : null}
+          {method === 'phone' ? (
+            <Button text={loading ? 'Loading' : 'Get one-time password'} />
+          ) : null}
         </form>
 
         {/* Social Login */}
