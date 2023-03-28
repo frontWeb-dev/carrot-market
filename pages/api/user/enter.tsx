@@ -5,18 +5,26 @@ import client from '@libs/server/client';
 async function handler(request: NextApiRequest, response: NextApiResponse) {
   const { phone, email } = request.body;
   const payload = phone ? { phone: +phone } : { email: email };
-  const user = await client.user.upsert({
-    where: {
-      ...payload,
+
+  const token = await client.token.create({
+    data: {
+      payload: String(Math.floor(Math.random() * 10000)),
+      user: {
+        connectOrCreate: {
+          where: {
+            ...payload,
+          },
+          create: {
+            name: 'Anonymous',
+            ...payload,
+          },
+        },
+      },
     },
-    create: {
-      name: 'Anonymous',
-      ...payload,
-    },
-    update: {},
   });
 
-  console.log(user);
+  console.log(token);
+
   /* if (email) {
     user = await client.user.findUnique({
       where: {
