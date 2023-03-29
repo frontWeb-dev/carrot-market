@@ -1,21 +1,17 @@
 import { useRouter } from 'next/router';
+import useSWR from 'swr';
 import { useState, useEffect } from 'react';
 
 // 유저 정보 확인 -> 로그인 화면으로 redirect
 export default function useUser() {
+  const { data, error } = useSWR('/api/user/me');
   const router = useRouter();
-  const [user, setUser] = useState();
 
   useEffect(() => {
-    fetch('/api/user/me')
-      .then((response) => response.json())
-      .then((data) => {
-        if (!data.ok) {
-          return router.replace('/enter');
-        }
-        setUser(data.profile);
-      });
-  }, [router]);
+    if (data && !data.ok) {
+      router.replace('/enter');
+    }
+  }, [data, router]);
 
-  return user;
+  return { user: data?.profile, isLoading: !data && !error };
 }
