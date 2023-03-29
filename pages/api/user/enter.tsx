@@ -32,14 +32,14 @@ async function handler(request: NextApiRequest, response: NextApiResponse<Respon
   });
 
   if (phone) {
-    const message = await twilioClient.messages.create({
+    /* const message = await twilioClient.messages.create({
       messagingServiceSid: process.env.TWILIO_MSID,
       to: process.env.PHONE_NUMBER!,
       body: `Your login token is ${payload}.`,
     });
-    console.log(message);
+    console.log(message); */
   } else if (email) {
-    const email = await mail.send({
+    /* const email = await mail.send({
       from: 'wlgh2942@naver.com',
       to: 'frontend_web@kakao.com',
       subject: 'Carrot Market 검증 메일 발송',
@@ -47,7 +47,7 @@ async function handler(request: NextApiRequest, response: NextApiResponse<Respon
       html: `<strong>Your token is ${payload}</strong>`,
     });
 
-    console.log(email);
+    console.log(email); */
   }
 
   return response.json({
