@@ -9,7 +9,7 @@ mail.setApiKey(process.env.MAIL_API!);
 const twilioClient = twilio(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
 async function handler(request: NextApiRequest, response: NextApiResponse<ResponseType>) {
   const { phone, email } = request.body;
-  const user = phone ? { phone: +phone } : email ? { email: email } : null;
+  const user = phone ? { phone: phone } : email ? { email: email } : null;
 
   if (!user) return response.status(400).json({ ok: false });
 
@@ -55,4 +55,8 @@ async function handler(request: NextApiRequest, response: NextApiResponse<Respon
   });
 }
 
-export default withHandler('POST', handler);
+export default withHandler({
+  method: 'POST',
+  handler,
+  isPrivate: false,
+});
