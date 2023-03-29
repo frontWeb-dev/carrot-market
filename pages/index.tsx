@@ -3,10 +3,17 @@ import Link from 'next/link';
 import FloatingButton from '@components/floatingButton';
 import Item from '@components/items';
 import Layout from '@components/layout';
+import useUser from './../libs/client/useUser';
+import Head from 'next/head';
 
 const Home: NextPage = () => {
+  const user = useUser();
+  console.log(user);
   return (
     <Layout title='캐럿 마켓' hasTabBar>
+      <Head>
+        <title>Home</title>
+      </Head>
       <div className='flex  flex-col pb-10'>
         {[...Array(10)].map((_, i) => (
           <Link key={i} href={`/items/${i + 1}`} legacyBehavior>
