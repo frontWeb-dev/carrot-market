@@ -1,10 +1,12 @@
 import twilio from 'twilio';
+import mail from '@sendgrid/mail';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { withHandler, ResponseType } from '@libs/server/withHandler';
 import client from '@libs/server/client';
 
-const twilioClient = twilio(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
+mail.setApiKey(process.env.MAIL_API!);
 
+const twilioClient = twilio(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
 async function handler(request: NextApiRequest, response: NextApiResponse<ResponseType>) {
   const { phone, email } = request.body;
   const user = phone ? { phone: +phone } : email ? { email: email } : null;
@@ -36,7 +38,18 @@ async function handler(request: NextApiRequest, response: NextApiResponse<Respon
       body: `Your login token is ${payload}.`,
     });
     console.log(message);
+  } else if (email) {
+    const email = await mail.send({
+      from: 'wlgh2942@naver.com',
+      to: 'frontend_web@kakao.com',
+      subject: 'Carrot Market 검증 메일 발송',
+      text: `Your token is ${payload}`,
+      html: `<strong>Your token is ${payload}</strong>`,
+    });
+
+    console.log(email);
   }
+
   return response.json({
     ok: true,
   });
