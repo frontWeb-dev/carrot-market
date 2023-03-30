@@ -8,9 +8,11 @@ interface ItemProps {
   hearts: number;
 }
 
-export default function Item({ title, price, comments, hearts, id }: ItemProps) {
+export default function Items({ title, price, comments, hearts, id }: ItemProps) {
   return (
-    <Link href={`/items/${id}`} className='flex cursor-pointer justify-between border border-b px-4 py-5 '>
+    <Link
+      href={`/items/${id}`}
+      className='flex cursor-pointer justify-between border border-b px-4 py-5 '>
       <div className='flex space-x-4'>
         <div className='h-20 w-20 rounded-md bg-gray-400' />
         <div className='flex flex-col pt-2'>
@@ -20,7 +22,12 @@ export default function Item({ title, price, comments, hearts, id }: ItemProps) 
       </div>
       <div className='flex items-end justify-end space-x-2'>
         <div className='flex items-center space-x-0.5 text-sm  text-gray-600'>
-          <svg className='h-4 w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>
+          <svg
+            className='h-4 w-4'
+            fill='none'
+            stroke='currentColor'
+            viewBox='0 0 24 24'
+            xmlns='http://www.w3.org/2000/svg'>
             <path
               strokeLinecap='round'
               strokeLinejoin='round'
@@ -30,7 +37,12 @@ export default function Item({ title, price, comments, hearts, id }: ItemProps) 
           <span>{hearts}</span>
         </div>
         <div className='flex items-center space-x-0.5 text-sm  text-gray-600'>
-          <svg className='h-4 w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>
+          <svg
+            className='h-4 w-4'
+            fill='none'
+            stroke='currentColor'
+            viewBox='0 0 24 24'
+            xmlns='http://www.w3.org/2000/svg'>
             <path
               strokeLinecap='round'
               strokeLinejoin='round'

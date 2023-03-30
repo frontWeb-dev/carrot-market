@@ -1,7 +1,5 @@
 import type { NextPage } from 'next';
-import Button from '@components/button';
-import Layout from '@components/layout';
-import TextArea from '@components/textarea';
+import { Layout, TextArea, Button } from '@components';
 
 const Write: NextPage = () => {
   return (

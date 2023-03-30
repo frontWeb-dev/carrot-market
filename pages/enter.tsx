@@ -1,11 +1,10 @@
 import { NextPage } from 'next';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { joinClassName } from '@libs/client/utils';
 import useMutation from '@libs/client/useMutation';
-import Input from '@components/input';
-import Button from '@components/button';
-import { useRouter } from 'next/router';
+import { Input, Button } from '@components';
 
 interface EnterForm {
   email?: string;

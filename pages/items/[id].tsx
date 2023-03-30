@@ -6,10 +6,22 @@ import Layout from '@components/layout';
 import Link from 'next/link';
 import Detail from '@components/skeleton/detail';
 import Similar from '@components/skeleton/similar';
+import { Product, User } from '@prisma/client';
+
+interface ItemsWithUser extends Product {
+  user: User;
+}
+
+interface ItemDetailResponse {
+  ok: boolean;
+  product: ItemsWithUser;
+}
 
 const ItemDetail: NextPage = () => {
   const router = useRouter();
-  const { data, isLoading } = useSWR(router.query.id ? `/api/products/${router.query.id}` : null);
+  const { data, isLoading } = useSWR<ItemDetailResponse>(
+    router.query.id ? `/api/products/${router.query.id}` : null
+  );
 
   if (isLoading || !data) {
     return (
@@ -26,7 +38,7 @@ const ItemDetail: NextPage = () => {
         <div className='mb-8'>
           <div className='h-72 bg-slate-300' />
           <div className='flex cursor-pointer items-center space-x-3 border-t border-b py-3'>
-            <img className='h-12 w-12 rounded-full bg-slate-300' src={data.product.user.avatar} />
+            <div className='h-12 w-12 rounded-full bg-slate-300' />
             <div>
               <p className='text-sm font-medium text-gray-700'>{data.product.user.name}</p>
               <Link href={`/profile/${data.product.user.id}`}>

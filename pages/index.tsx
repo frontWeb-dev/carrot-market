@@ -2,10 +2,7 @@ import type { NextPage } from 'next';
 import Link from 'next/link';
 import Head from 'next/head';
 import useSWR from 'swr';
-
-import FloatingButton from '@components/floatingButton';
-import Item from '@components/items';
-import Layout from '@components/layout';
+import { FloatingButton, Items, Layout } from '@components';
 import useUser from '@libs/client/useUser';
 import { Product } from '@prisma/client';
 
@@ -27,7 +24,7 @@ const Home: NextPage = () => {
       <div className='flex  flex-col pb-10'>
         {data?.products?.map((product) => (
           <Link key={product.id} href={`/items/${product.id}`} legacyBehavior>
-            <Item
+            <Items
               id={product.id}
               title={product.name}
               price={product.price}

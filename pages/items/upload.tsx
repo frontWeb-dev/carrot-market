@@ -3,10 +3,7 @@ import type { NextPage } from 'next';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 
-import Layout from '@components/layout';
-import Input from '@components/input';
-import Button from '@components/button';
-import TextArea from '@components/textarea';
+import { Layout, Input, TextArea, Button } from '@components';
 import useMutation from '@libs/client/useMutation';
 import { Product } from '@prisma/client';
 
