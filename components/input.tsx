@@ -21,7 +21,7 @@ export default function Input({
 }: InputProps) {
   return (
     <div>
-      <label className='mb-1 block text-sm font-medium text-gray-700' htmlFor={name}>
+      <label className='mt-2 mb-1 block text-sm font-medium text-gray-700' htmlFor={name}>
         {label}
       </label>
       {kind === 'text' ? (

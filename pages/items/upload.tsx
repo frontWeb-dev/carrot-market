@@ -1,10 +1,28 @@
 import type { NextPage } from 'next';
+import { useForm } from 'react-hook-form';
 import Layout from '@components/layout';
+import Input from '@components/input';
+import Button from '@components/button';
+import TextArea from '@components/textarea';
+import useMutation from '@libs/client/useMutation';
 
+interface UploadProductForm {
+  name: string;
+  price: number;
+  description: string;
+}
 const Upload: NextPage = () => {
+  const { register, handleSubmit } = useForm<UploadProductForm>();
+  const [uploadProduct, { loading, data }] = useMutation('/api/products');
+
+  const onValid = (data: UploadProductForm) => {
+    if (loading) return;
+    uploadProduct(data);
+  };
+
   return (
     <Layout canGoBack>
-      <div className='px-4 py-16'>
+      <form onSubmit={handleSubmit(onValid)} className='px-4 py-8'>
         <div>
           <label className='flex h-48 w-full cursor-pointer items-center justify-center border-2 border-dashed border-gray-300 text-gray-600 hover:border-orange-500 hover:text-orange-500 '>
             <svg
@@ -24,39 +42,29 @@ const Upload: NextPage = () => {
             <input className='hidden' type='file' />
           </label>
         </div>
-        <div className=''>
-          <label className='mb-1 text-sm font-medium text-gray-700' htmlFor='price'>
-            Price
-          </label>
-          <div className='relative flex items-center justify-center rounded-md shadow-sm'>
-            <div className='absolute left-0 flex items-center justify-center pl-3'>
-              <span className='pointer-events-none text-sm text-gray-500'>$</span>
-            </div>
-            <input
-              id='price'
-              className='placeholdergray-400 focus:ouline-none w-full appearance-none rounded-md border-gray-300 px-3 py-2 pl-7 shadow-sm focus:border-orange-500 focus:ring-orange-500'
-              type='text'
-              placeholder='0.00'
-            />
-            <div className='pointer-events-none absolute right-0 flex items-center pr-3'>
-              <span className='text-sm text-gray-500'>USD</span>
-            </div>
-          </div>
-        </div>
-        <div>
-          <label className='mb-1 text-sm font-medium text-gray-700' htmlFor='price'>
-            Description
-          </label>
-
-          <textarea
-            rows={4}
-            className='mt-1 w-full rounded-md border-gray-300 shadow-sm focus:outline-none focus:ring-orange-500'
-          />
-        </div>
-        <button className='mt-5 w-full rounded-md border border-transparent bg-orange-500 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2'>
-          Upload product
-        </button>
-      </div>
+        <Input
+          register={register('name', { required: true })}
+          label='상품명'
+          type='text'
+          name='name'
+          required
+        />
+        <Input
+          register={register('price', { required: true })}
+          label='가격'
+          type='text'
+          name='name'
+          kind='price'
+          required
+        />
+        <TextArea
+          register={register('description', { required: true })}
+          label='상품 설명'
+          name='description'
+          required
+        />
+        <Button text={loading ? '로딩중...' : '상품 등록'} />
+      </form>
     </Layout>
   );
 };
