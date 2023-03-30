@@ -4,7 +4,10 @@ import { withHandler, ResponseType } from '@libs/server/withHandler';
 import { withApiSession } from '@libs/server/withSession';
 
 async function handler(request: NextApiRequest, response: NextApiResponse<ResponseType>) {
-  const { id } = request.query;
+  const {
+    query: { id },
+    session: { user },
+  } = request;
   const stringId = +id!.toString();
   const product = await client.product.findUnique({
     where: {
@@ -27,6 +30,18 @@ async function handler(request: NextApiRequest, response: NextApiResponse<Respon
     },
   }));
 
+  const isLiked = Boolean(
+    await client.favorite.findFirst({
+      where: {
+        productId: product?.id,
+        userId: user?.id,
+      },
+      select: {
+        id: true,
+      },
+    })
+  );
+
   const relatedProducts = await client.product.findMany({
     where: {
       OR: terms,
@@ -39,7 +54,7 @@ async function handler(request: NextApiRequest, response: NextApiResponse<Respon
     take: 4,
   });
 
-  response.json({ ok: true, product, relatedProducts });
+  response.json({ ok: true, product, isLiked, relatedProducts });
 }
 
 export default withApiSession(

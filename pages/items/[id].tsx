@@ -7,6 +7,8 @@ import Link from 'next/link';
 import Detail from '@components/skeleton/detail';
 import Similar from '@components/skeleton/similar';
 import { Product, User } from '@prisma/client';
+import useMutation from './../../libs/client/useMutation';
+import { joinClassName } from '@libs/client/utils';
 
 interface ItemsWithUser extends Product {
   user: User;
@@ -15,16 +17,24 @@ interface ItemsWithUser extends Product {
 interface ItemDetailResponse {
   ok: boolean;
   product: ItemsWithUser;
+  isLiked: boolean;
   relatedProducts: Product[];
 }
 
 const ItemDetail: NextPage = () => {
   const router = useRouter();
-  const { data, isLoading } = useSWR<ItemDetailResponse>(
+  const { data, isLoading, mutate } = useSWR<ItemDetailResponse>(
     router.query.id ? `/api/products/${router.query.id}` : null
   );
 
-  console.log(data);
+  const [toggleFav] = useMutation(`/api/products/${router.query.id}/fav`);
+
+  const onFavoriteClick = () => {
+    if (!data) return;
+    mutate({ ...data, isLiked: !data.isLiked }, false);
+    toggleFav({});
+  };
+
   if (isLoading || !data) {
     return (
       <Layout path='/'>
@@ -54,11 +64,18 @@ const ItemDetail: NextPage = () => {
             <p className=' my-6 text-gray-700'>{data.product.description}</p>
             <div className='flex items-center justify-between space-x-2'>
               <Button large text='Talk to seller' />
-              <button className='flex items-center justify-center rounded-md p-3 text-gray-400 hover:bg-gray-100 hover:text-gray-500'>
+              <button
+                onClick={onFavoriteClick}
+                className={joinClassName(
+                  'flex items-center justify-center rounded-md p-3 hover:bg-gray-100',
+                  data.isLiked
+                    ? 'text-red-400 hover:text-red-500'
+                    : 'text-gray-400  hover:text-gray-500'
+                )}>
                 <svg
                   className='h-6 w-6 '
                   xmlns='http://www.w3.org/2000/svg'
-                  fill='none'
+                  fill={data?.isLiked ? 'currentColor' : 'none'}
                   viewBox='0 0 24 24'
                   stroke='currentColor'
                   aria-hidden='true'>
