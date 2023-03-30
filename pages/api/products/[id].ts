@@ -3,12 +3,12 @@ import client from '@libs/server/client';
 import { withHandler, ResponseType } from '@libs/server/withHandler';
 import { withApiSession } from '@libs/server/withSession';
 
-// 로그인 된 유저 정보 확인
 async function handler(request: NextApiRequest, response: NextApiResponse<ResponseType>) {
   const { id } = request.query;
+  const stringId = +id!.toString();
   const product = await client.product.findUnique({
     where: {
-      id: +id!.toString(),
+      id: stringId,
     },
     include: {
       user: {
@@ -20,7 +20,26 @@ async function handler(request: NextApiRequest, response: NextApiResponse<Respon
       },
     },
   });
-  response.json({ ok: true, product });
+
+  const terms = product?.name.split(' ').map((word) => ({
+    name: {
+      contains: word,
+    },
+  }));
+
+  const relatedProducts = await client.product.findMany({
+    where: {
+      OR: terms,
+      AND: {
+        id: {
+          not: stringId,
+        },
+      },
+    },
+    take: 4,
+  });
+
+  response.json({ ok: true, product, relatedProducts });
 }
 
 export default withApiSession(

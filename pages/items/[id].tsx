@@ -15,6 +15,7 @@ interface ItemsWithUser extends Product {
 interface ItemDetailResponse {
   ok: boolean;
   product: ItemsWithUser;
+  relatedProducts: Product[];
 }
 
 const ItemDetail: NextPage = () => {
@@ -23,9 +24,10 @@ const ItemDetail: NextPage = () => {
     router.query.id ? `/api/products/${router.query.id}` : null
   );
 
+  console.log(data);
   if (isLoading || !data) {
     return (
-      <Layout canGoBack>
+      <Layout path='/'>
         <Detail />
         <Similar />
       </Layout>
@@ -33,7 +35,7 @@ const ItemDetail: NextPage = () => {
   }
 
   return (
-    <Layout canGoBack>
+    <Layout path='/'>
       <div className='px-4  pt-5 pb-10'>
         <div className='mb-8'>
           <div className='h-72 bg-slate-300' />
@@ -74,12 +76,12 @@ const ItemDetail: NextPage = () => {
         <div>
           <h2 className='text-2xl font-bold text-gray-900'>Similar items</h2>
           <div className=' mt-6 grid grid-cols-2 gap-4'>
-            {[1, 2, 3, 4, 5, 6].map((_, i) => (
-              <div key={i}>
+            {data.relatedProducts.map((product) => (
+              <Link href={`/items/${product.id}`} key={product.id}>
                 <div className='mb-4 h-56 w-full bg-slate-300' />
-                <h3 className='-mb-1 text-gray-700'>Galaxy S60</h3>
-                <span className='text-sm font-medium text-gray-900'>$6</span>
-              </div>
+                <h3 className='-mb-1 text-gray-700'>{product.name}</h3>
+                <span className='text-sm font-medium text-gray-900'>${product.price}</span>
+              </Link>
             ))}
           </div>
         </div>
