@@ -6,7 +6,15 @@ import { withApiSession } from '@libs/server/withSession';
 // 로그인 된 유저 정보 확인
 async function handler(request: NextApiRequest, response: NextApiResponse<ResponseType>) {
   if (request.method === 'GET') {
-    const products = await client.product.findMany({});
+    const products = await client.product.findMany({
+      include: {
+        _count: {
+          select: {
+            favorite: true,
+          },
+        },
+      },
+    });
     response.json({
       ok: true,
       products,

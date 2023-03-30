@@ -6,15 +6,19 @@ import { FloatingButton, Items, Layout } from '@components';
 import useUser from '@libs/client/useUser';
 import { Product } from '@prisma/client';
 
+interface FavWithProducts extends Product {
+  _count: {
+    favorite: number;
+  };
+}
 interface ProductResponse {
   ok: boolean;
-  products: Product[];
+  products: FavWithProducts[];
 }
 
 const Home: NextPage = () => {
   const { user, isLoading } = useUser();
   const { data } = useSWR<ProductResponse>('/api/products');
-  console.log(data);
 
   return (
     <Layout title='캐럿 마켓' hasTabBar>
@@ -29,7 +33,7 @@ const Home: NextPage = () => {
               title={product.name}
               price={product.price}
               comments={0}
-              hearts={0}
+              hearts={product._count.favorite}
             />
           </Link>
         ))}
