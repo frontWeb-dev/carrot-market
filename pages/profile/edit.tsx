@@ -3,7 +3,7 @@ import { Button, Input, Layout } from '@components';
 
 const EditProfile: NextPage = () => {
   return (
-    <Layout canGoBack title='Edit Profile'>
+    <Layout path='/profile' title='Edit Profile'>
       <form className='space-y-4 py-10 px-4'>
         <div className='flex items-center space-x-3'>
           <div className='h-14 w-14 rounded-full bg-slate-500' />

@@ -1,14 +1,14 @@
 import type { NextPage } from 'next';
 import Link from 'next/link';
-import { Item, Layout } from '@components';
+import { Items, Layout } from '@components';
 
 const Bought: NextPage = () => {
   return (
-    <Layout title='구매 내역' canGoBack>
+    <Layout title='구매 내역' path='/profile'>
       <div className='flex flex-col'>
         {[...Array(10)].map((_, i) => (
           <Link key={i} href={`/items/${i + 1}`} legacyBehavior>
-            <Item id={i} key={i} title='iPhone 14' price={99} comments={1} hearts={1} />
+            <Items id={i} key={i} title='iPhone 14' price={99} comments={1} hearts={1} />
           </Link>
         ))}
       </div>

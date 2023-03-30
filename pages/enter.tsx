@@ -18,6 +18,7 @@ interface TokenForm {
 interface MutationResult {
   ok: boolean;
 }
+
 const Enter: NextPage = () => {
   const router = useRouter();
   const [enter, { loading, data, error }] = useMutation<MutationResult>('/api/user/enter');

@@ -4,7 +4,7 @@ import { Items, Layout } from '@components';
 
 const Sold: NextPage = () => {
   return (
-    <Layout title='판매 내역' canGoBack>
+    <Layout title='판매 내역' path='/profile'>
       <div className='flex flex-col'>
         {[...Array(10)].map((_, i) => (
           <Link key={i} href={`/items/${i + 1}`} legacyBehavior>

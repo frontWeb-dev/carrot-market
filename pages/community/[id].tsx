@@ -3,7 +3,7 @@ import { Layout, TextArea } from '@components';
 
 const CommunityPostDetail: NextPage = () => {
   return (
-    <Layout canGoBack>
+    <Layout path='/community'>
       <div>
         <span className='my-3 ml-4 inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800'>
           동네질문

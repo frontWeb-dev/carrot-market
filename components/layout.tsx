@@ -4,22 +4,22 @@ import { useRouter } from 'next/router';
 
 interface LayoutProps {
   title?: string;
-  canGoBack?: boolean;
+  path?: string;
   hasTabBar?: boolean;
   children: React.ReactNode;
 }
 
-export default function Layout({ title, canGoBack, hasTabBar, children }: LayoutProps) {
+export default function Layout({ title, path, hasTabBar, children }: LayoutProps) {
   const router = useRouter();
-  const goToBack = () => {
-    router.back();
+  const goToBack = (path: string) => {
+    router.push(path);
   };
 
   return (
     <div className='relative'>
       <div className='fixed top-0 flex h-14 w-full max-w-md items-center justify-center border-b bg-white px-6 text-lg font-medium text-gray-700 shadow-sm'>
-        {canGoBack && (
-          <button onClick={goToBack} className='absolute left-4'>
+        {path && (
+          <button onClick={() => goToBack(path)} className='absolute left-4'>
             <svg
               className='h-6 w-6'
               fill='none'
