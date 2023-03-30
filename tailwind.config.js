@@ -6,7 +6,17 @@ module.exports = {
     './components/**/*.{js,jsx,ts,tsx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      animation: {
+        skeleton: 'skeleton-gradient 2s infinite linear;',
+      },
+      keyframes: {
+        'skeleton-gradient': {
+          '0%, 100%': { backgroundColor: 'rgba(226, 232, 240, 0.4)' },
+          '50%': { backgroundColor: 'rgba(226, 232, 240, 0.8)' },
+        },
+      },
+    },
   },
   darkMode: 'class',
   plugins: [require('@tailwindcss/forms')],
