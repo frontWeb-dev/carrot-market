@@ -1,14 +1,12 @@
 import type { NextPage } from 'next';
-import { useRouter } from 'next/router';
-import useSWR from 'swr';
-import Button from '@components/button';
-import Layout from '@components/layout';
 import Link from 'next/link';
-import Detail from '@components/skeleton/detail';
-import Similar from '@components/skeleton/similar';
+import { useRouter } from 'next/router';
+import useSWR, { useSWRConfig } from 'swr';
 import { Product, User } from '@prisma/client';
-import useMutation from './../../libs/client/useMutation';
+import { Button, Layout, Detail, Similar } from '@components';
+import useMutation from '@libs/client/useMutation';
 import { joinClassName } from '@libs/client/utils';
+import useUser from '@libs/client/useUser';
 
 interface ItemsWithUser extends Product {
   user: User;
@@ -23,15 +21,18 @@ interface ItemDetailResponse {
 
 const ItemDetail: NextPage = () => {
   const router = useRouter();
-  const { data, isLoading, mutate } = useSWR<ItemDetailResponse>(
-    router.query.id ? `/api/products/${router.query.id}` : null
-  );
+  const { mutate: unboundMutate } = useSWRConfig();
+  const {
+    data,
+    isLoading,
+    mutate: boundMutate,
+  } = useSWR<ItemDetailResponse>(router.query.id ? `/api/products/${router.query.id}` : null);
 
   const [toggleFav] = useMutation(`/api/products/${router.query.id}/fav`);
 
   const onFavoriteClick = () => {
     if (!data) return;
-    mutate({ ...data, isLiked: !data.isLiked }, false);
+    boundMutate({ ...data, isLiked: !data.isLiked }, false);
     toggleFav({});
   };
 
@@ -69,7 +70,7 @@ const ItemDetail: NextPage = () => {
                 className={joinClassName(
                   'flex items-center justify-center rounded-md p-3 hover:bg-gray-100',
                   data.isLiked
-                    ? 'text-red-400 hover:text-red-500'
+                    ? 'text-orange-400 hover:text-orange-500'
                     : 'text-gray-400  hover:text-gray-500'
                 )}>
                 <svg
