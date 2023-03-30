@@ -1,23 +1,39 @@
 import type { NextPage } from 'next';
 import Link from 'next/link';
+import Head from 'next/head';
+import useSWR from 'swr';
+
 import FloatingButton from '@components/floatingButton';
 import Item from '@components/items';
 import Layout from '@components/layout';
-import useUser from './../libs/client/useUser';
-import Head from 'next/head';
+import useUser from '@libs/client/useUser';
+import { Product } from '@prisma/client';
+
+interface ProductResponse {
+  ok: boolean;
+  products: Product[];
+}
 
 const Home: NextPage = () => {
   const { user, isLoading } = useUser();
-  console.log(user);
+  const { data } = useSWR<ProductResponse>('/api/products');
+  console.log(data);
+
   return (
     <Layout title='캐럿 마켓' hasTabBar>
       <Head>
         <title>Home</title>
       </Head>
       <div className='flex  flex-col pb-10'>
-        {[...Array(10)].map((_, i) => (
-          <Link key={i} href={`/items/${i + 1}`} legacyBehavior>
-            <Item id={i} key={i} title='iPhone 14' price={99} comments={1} hearts={1} />
+        {data?.products?.map((product) => (
+          <Link key={product.id} href={`/items/${product.id}`} legacyBehavior>
+            <Item
+              id={product.id}
+              title={product.name}
+              price={product.price}
+              comments={0}
+              hearts={0}
+            />
           </Link>
         ))}
 

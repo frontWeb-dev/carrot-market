@@ -19,7 +19,7 @@ async function handler(request: NextApiRequest, response: NextApiResponse<Respon
 
 export default withApiSession(
   withHandler({
-    method: 'GET',
+    methods: ['GET'],
     handler,
   })
 );

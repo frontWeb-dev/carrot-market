@@ -5,33 +5,44 @@ import { withApiSession } from '@libs/server/withSession';
 
 // 로그인 된 유저 정보 확인
 async function handler(request: NextApiRequest, response: NextApiResponse<ResponseType>) {
-  const {
-    body: { name, price, description },
-    session: { user },
-  } = request;
+  if (request.method === 'GET') {
+    const products = await client.product.findMany({});
+    response.json({
+      ok: true,
+      products,
+    });
+  }
 
-  const product = await client.product.create({
-    data: {
-      name,
-      price: +price,
-      description,
-      image: 'xx',
-      user: {
-        connect: {
-          id: user?.id,
+  if (request.method === 'POST') {
+    const {
+      body: { name, price, description },
+      session: { user },
+    } = request;
+
+    const product = await client.product.create({
+      data: {
+        name,
+        price: +price,
+        description,
+        image: 'xx',
+        user: {
+          connect: {
+            id: user?.id,
+          },
         },
       },
-    },
-  });
-  response.json({
-    ok: true,
-    product,
-  });
+    });
+
+    response.json({
+      ok: true,
+      product,
+    });
+  }
 }
 
 export default withApiSession(
   withHandler({
-    method: 'POST',
+    methods: ['GET', 'POST'],
     handler,
   })
 );
