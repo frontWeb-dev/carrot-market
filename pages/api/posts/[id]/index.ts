@@ -14,6 +14,7 @@ import { withApiSession } from '@libs/server/withSession';
 async function handler(request: NextApiRequest, response: NextApiResponse<ResponseType>) {
   const {
     query: { id },
+    session: { user },
   } = request;
 
   if (!id) return response.status(404).json({ ok: false });
@@ -52,9 +53,22 @@ async function handler(request: NextApiRequest, response: NextApiResponse<Respon
     },
   });
 
+  const isWondering = Boolean(
+    await client.wondering.findFirst({
+      where: {
+        postId: +id.toString(),
+        userId: user?.id,
+      },
+      select: {
+        id: true,
+      },
+    })
+  );
+
   response.json({
     ok: true,
     post,
+    isWondering,
   });
 }
 
