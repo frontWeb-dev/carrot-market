@@ -13,12 +13,14 @@ import { withApiSession } from '@libs/server/withSession';
 */
 
 async function handler(request: NextApiRequest, response: NextApiResponse<ResponseType>) {
-  const {
-    body: { question, latitude, longitude },
-    session: { user },
-  } = request;
-
   if (request.method === 'GET') {
+    const {
+      query: { latitude, longitude },
+    } = request;
+
+    const latitudeParse = parseFloat(latitude.toString());
+    const longitudeParse = parseFloat(longitude.toString());
+
     const posts = await client.post.findMany({
       include: {
         user: {
@@ -35,6 +37,16 @@ async function handler(request: NextApiRequest, response: NextApiResponse<Respon
           },
         },
       },
+      where: {
+        latitude: {
+          gte: latitudeParse - 0.01,
+          lte: latitudeParse + 0.01,
+        },
+        longitude: {
+          gte: longitudeParse - 0.01,
+          lte: longitudeParse + 0.01,
+        },
+      },
     });
 
     response.json({
@@ -44,6 +56,11 @@ async function handler(request: NextApiRequest, response: NextApiResponse<Respon
   }
 
   if (request.method === 'POST') {
+    const {
+      body: { question, latitude, longitude },
+      session: { user },
+    } = request;
+
     const post = await client.post.create({
       data: {
         question,

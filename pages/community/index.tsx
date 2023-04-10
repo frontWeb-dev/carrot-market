@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Layout, FloatingButton } from '@components';
 import useSWR from 'swr';
 import { Post, User } from '@prisma/client';
+import useCoords from '@libs/client/useCoords';
 
 interface PostsWithUser extends Post {
   user: User;
@@ -18,7 +19,10 @@ interface PostsResponse {
 }
 
 const Community: NextPage = () => {
-  const { data } = useSWR<PostsResponse>('/api/posts');
+  const { latitude, longitude } = useCoords();
+  const { data } = useSWR<PostsResponse>(
+    latitude && longitude ? `/api/posts?latitude=${latitude}&longitude=${longitude}` : null
+  );
 
   return (
     <Layout title='동네 생활' hasTabBar>
