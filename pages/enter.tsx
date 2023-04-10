@@ -27,6 +27,7 @@ const Enter: NextPage = () => {
 
   const [method, setMethod] = useState<'email' | 'phone'>('email');
   const { register: tokenRegister, handleSubmit: tokenHandleSubmit } = useForm<TokenForm>();
+
   const { register, reset, handleSubmit } = useForm<EnterForm>();
   const onEmailClick = () => {
     reset();
