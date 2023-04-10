@@ -5,8 +5,11 @@ import { withApiSession } from '@libs/server/withSession';
 
 /* 
   Todo. 동네 생활 질문 등록 API
-  question과 session user 정보 가져오기
-  question과 session user id를 연결하여 데이터 생성 
+  - GET
+    모든 post 목록 반환하기
+  - POST 
+    question과 session user 정보 가져오기
+    question과 session user id를 연결하여 데이터 생성 
 */
 
 async function handler(request: NextApiRequest, response: NextApiResponse<ResponseType>) {
@@ -15,26 +18,52 @@ async function handler(request: NextApiRequest, response: NextApiResponse<Respon
     session: { user },
   } = request;
 
-  const post = await client.post.create({
-    data: {
-      question,
-      user: {
-        connect: {
-          id: user?.id,
+  if (request.method === 'GET') {
+    const posts = await client.post.findMany({
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            avatar: true,
+          },
+        },
+        _count: {
+          select: {
+            answers: true,
+            wondering: true,
+          },
         },
       },
-    },
-  });
+    });
 
-  response.json({
-    ok: true,
-    post,
-  });
+    response.json({
+      ok: true,
+      posts,
+    });
+  }
+
+  if (request.method === 'POST') {
+    const post = await client.post.create({
+      data: {
+        question,
+        user: {
+          connect: {
+            id: user?.id,
+          },
+        },
+      },
+    });
+    response.json({
+      ok: true,
+      post,
+    });
+  }
 }
 
 export default withApiSession(
   withHandler({
-    methods: ['POST'],
+    methods: ['GET', 'POST'],
     handler,
   })
 );

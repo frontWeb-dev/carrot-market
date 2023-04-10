@@ -39,7 +39,6 @@ interface AnswerReponse {
 }
 
 const CommunityPostDetail: NextPage = () => {
-  const { user } = useUser();
   const router = useRouter();
   const { register, handleSubmit, reset } = useForm<AnswerForm>();
   const { data, mutate } = useSWR<CommunityPostResponse>(
@@ -79,11 +78,13 @@ const CommunityPostDetail: NextPage = () => {
     sendAnswer(form);
   };
 
+  // answerForm 초기화
   useEffect(() => {
     if (answerData && answerData.ok) {
       reset();
+      mutate(); // re-fetch
     }
-  }, [answerData]);
+  }, [answerData, reset, mutate]);
 
   return (
     <Layout path='/community'>
@@ -149,7 +150,7 @@ const CommunityPostDetail: NextPage = () => {
               <div className='h-8 w-8 rounded-full bg-slate-200' />
               <div className='w-[90%]'>
                 <span className='block text-sm font-medium text-gray-700'>{answer.user.name}</span>
-                <span className='block text-xs text-gray-500 '>{answer.createAt}</span>
+                <span className='block text-xs text-gray-500 '>{String(answer.createAt)}</span>
                 <p className='mt-2 text-sm text-gray-700'>{answer.answer}</p>
               </div>
             </div>
