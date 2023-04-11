@@ -13,7 +13,15 @@ async function handler(request: NextApiRequest, response: NextApiResponse<Respon
       userId: user?.id,
     },
     include: {
-      product: true,
+      product: {
+        include: {
+          _count: {
+            select: {
+              favorite: true,
+            },
+          },
+        },
+      },
     },
   });
 
