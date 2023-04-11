@@ -11,6 +11,8 @@ async function handler(request: NextApiRequest, response: NextApiResponse<Respon
     },
   });
 
+  if (!profile) return response.json({ ok: false });
+
   response.json({
     ok: true,
     profile,

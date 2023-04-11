@@ -3,7 +3,6 @@ import Link from 'next/link';
 import Head from 'next/head';
 import useSWR from 'swr';
 import { FloatingButton, Items, Layout } from '@components';
-import useUser from '@libs/client/useUser';
 import { Product } from '@prisma/client';
 
 export interface ProductWithCount extends Product {
@@ -17,7 +16,6 @@ interface ProductResponse {
 }
 
 const Home: NextPage = () => {
-  const { user, isLoading } = useUser();
   const { data } = useSWR<ProductResponse>('/api/products');
 
   return (

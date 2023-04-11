@@ -1,13 +1,22 @@
 import '@styles/globals.css';
 import { SWRConfig } from 'swr';
 import type { AppProps } from 'next/app';
+import { User } from '@prisma/client';
+import { useState } from 'react';
+import Auth from '@components/auth';
 
-export default function App({ Component, pageProps }: AppProps) {
+interface MyAppProps extends AppProps {
+  user: User;
+}
+
+export default function App({ Component, pageProps }: MyAppProps) {
+  const [user, setUser] = useState<User | undefined>();
+
   return (
     <SWRConfig value={{ fetcher: (url: string) => fetch(url).then((response) => response.json()) }}>
-      <div className='mx-auto  w-full max-w-md'>
-        <Component {...pageProps} />
-      </div>
+      <Auth setUser={setUser}>
+        <Component {...pageProps} user={user} />
+      </Auth>
     </SWRConfig>
   );
 }

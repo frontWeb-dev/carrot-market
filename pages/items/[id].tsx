@@ -6,7 +6,6 @@ import { Product, User } from '@prisma/client';
 import { Button, Layout, Detail, Similar } from '@components';
 import useMutation from '@libs/client/useMutation';
 import { joinClassName } from '@libs/client/utils';
-import useUser from '@libs/client/useUser';
 
 interface ItemsWithUser extends Product {
   user: User;

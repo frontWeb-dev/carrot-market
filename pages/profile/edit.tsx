@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import { Button, Input, Layout } from '@components';
 
-const EditProfile: NextPage = () => {
+const EditProfile: NextPage = (user) => {
   return (
     <Layout path='/profile' title='Edit Profile'>
       <form className='space-y-4 py-10 px-4'>
