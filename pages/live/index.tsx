@@ -1,8 +1,8 @@
 import type { NextPage } from 'next';
 import Link from 'next/link';
-import { Layout, FloatingButton } from '@components';
 import useSWR from 'swr';
 import { Stream } from '@prisma/client';
+import { Layout, FloatingButton } from '@components';
 
 interface StreamsResponse {
   ok: boolean;
@@ -11,6 +11,7 @@ interface StreamsResponse {
 
 const Live: NextPage = () => {
   const { data } = useSWR<StreamsResponse>('/api/stream');
+
   return (
     <Layout title='라이브' hasTabBar>
       <div className='space-y-4 divide-y-2 pb-5'>

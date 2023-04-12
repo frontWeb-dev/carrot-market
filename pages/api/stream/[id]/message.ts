@@ -5,23 +5,36 @@ import { withApiSession } from '@libs/server/withSession';
 
 async function handler(request: NextApiRequest, response: NextApiResponse<ResponseType>) {
   const {
+    session: { user },
     query: { id },
+    body,
   } = request;
 
-  if (!id) return response.status(400).json({ ok: false });
-
-  const stream = await client.stream.findUnique({
-    where: {
-      id: +id?.toString(),
+  const message = await client.message.create({
+    data: {
+      message: body.message,
+      stream: {
+        connect: {
+          id: +id?.toString()!,
+        },
+      },
+      user: {
+        connect: {
+          id: user?.id!,
+        },
+      },
     },
   });
 
-  response.json({ ok: true, stream });
+  response.json({
+    ok: true,
+    message,
+  });
 }
 
 export default withApiSession(
   withHandler({
-    methods: ['GET'],
+    methods: ['POST'],
     handler,
   })
 );

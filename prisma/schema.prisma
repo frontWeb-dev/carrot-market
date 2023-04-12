@@ -173,7 +173,7 @@ model Stream {
   price       Int
   user        User      @relation(fields: [userId], references: [id])
   userId      Int
-  Message     Message[]
+  message     Message[]
 
   @@index([userId])
 }

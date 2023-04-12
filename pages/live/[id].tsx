@@ -1,21 +1,68 @@
 import type { NextPage } from 'next';
-import { Layout, Message, ChatInput } from '@components';
+import { Layout, Message } from '@components';
 import useSWR from 'swr';
 import { useRouter } from 'next/router';
 import { Stream } from '@prisma/client';
+import { UserProps } from '@pages/profile';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import useMutation from '@libs/client/useMutation';
+
+interface StreamMessage {
+  id: number;
+  message: string;
+  user: {
+    avatar: string | null;
+    id: number;
+  };
+}
+
+interface StreamWithMessage extends Stream {
+  message: StreamMessage[];
+}
 
 interface StreamResponse {
   ok: boolean;
-  stream: Stream;
+  stream: StreamWithMessage;
 }
 
-const Stream: NextPage = () => {
+interface MessageForm {
+  message: string;
+}
+
+const Live: NextPage = ({ user }: UserProps) => {
   const router = useRouter();
-  const { data } = useSWR<StreamResponse>(
-    router.query.id ? `/api/stream/${router.query.id}` : null
+  const { register, handleSubmit, reset } = useForm<MessageForm>();
+  const { data, mutate } = useSWR<StreamResponse>(
+    router.query.id ? `/api/stream/${router.query.id}` : null,
+    {
+      refreshInterval: 1000,
+    }
+  );
+  const [sendMessage, { loading, data: sendMessageData }] = useMutation(
+    `/api/stream/${router.query.id}/message`
   );
 
-  console.log(data);
+  const onValid = (form: MessageForm) => {
+    if (loading) return;
+    reset();
+    mutate(
+      (prev) =>
+        prev &&
+        ({
+          ...prev,
+          stream: {
+            ...prev.stream,
+            message: [
+              ...prev.stream.message,
+              { id: Date.now(), message: form.message, user: { ...user } },
+            ],
+          },
+        } as any),
+      false
+    );
+    // sendMessage(form);
+  };
   return (
     <Layout path='/live'>
       <div className='space-y-4 py-5  px-4'>
@@ -28,15 +75,39 @@ const Stream: NextPage = () => {
         <div>
           <h2 className='text-2xl font-bold text-gray-900'>Live Chat</h2>
           <div className='h-[50vh] space-y-4 overflow-y-scroll py-10  px-4 pb-16'>
-            <Message message='Hi how much are you selling them for?' />
-            <Message message='I want ￦20,000' reversed />
-            <Message message='미쳤어' />
+            {data?.stream.message.map((message) => (
+              <Message
+                key={message.id}
+                message={message.message}
+                reversed={user?.id === message.user.id}
+              />
+            ))}
           </div>
-          <ChatInput />
+          <form
+            onSubmit={handleSubmit(onValid)}
+            className='fixed inset-x-0 bottom-0  bg-white pt-2 pb-6'>
+            <div className='relative mx-auto flex w-full max-w-md items-center px-4'>
+              <input
+                {...register('message', {
+                  required: true,
+                })}
+                type='text'
+                name='message'
+                className='w-full rounded-full border-gray-300 pr-12 shadow-sm focus:border-orange-500 focus:outline-none focus:ring-orange-500'
+              />
+              <div className='absolute inset-y-0 right-4 flex py-1.5 pr-1.5'>
+                <button
+                  type='submit'
+                  className='flex items-center rounded-full bg-orange-500 px-3 text-sm text-white hover:bg-orange-600 focus:ring-2 focus:ring-orange-500 focus:ring-offset-2'>
+                  &rarr;
+                </button>
+              </div>
+            </div>
+          </form>
         </div>
       </div>
     </Layout>
   );
 };
 
-export default Stream;
+export default Live;
