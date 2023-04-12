@@ -5,6 +5,7 @@ import { Stream } from '@prisma/client';
 import { Layout, FloatingButton } from '@components';
 import { useEffect, useState } from 'react';
 import { joinClassName } from '@libs/client/utils';
+import Pagination from '@components/Pagination';
 
 interface StreamsResponse {
   ok: boolean;
@@ -16,21 +17,7 @@ const Live: NextPage = () => {
   const { data } = useSWR<StreamsResponse>('/api/stream');
   const { data: limitData } = useSWR<StreamsResponse>(`/api/stream?page=${currentPage}`);
 
-  let firstNum = currentPage - (currentPage % 5) + 1;
-  const numPages = Math.ceil(data?.streams?.length! / 20);
-
-  const prevPage = () => {
-    setCurrentPage((prev) => prev - 5);
-  };
-  const nextPage = () => {
-    setCurrentPage((prev) => prev + 5);
-  };
-
-  const movePage = (e) => {
-    e.preventDefault();
-    console.log(+e.target.innerText, currentPage);
-    setCurrentPage(+e.target.innerText);
-  };
+  const totalCount = data?.streams?.length!;
 
   if (!data) return <div>Loading</div>;
 
@@ -42,32 +29,16 @@ const Live: NextPage = () => {
             <div className='p-4'>
               {/* aspect-video : 비디오 비율 지정 (16:9) */}
               <div className='aspect-video w-full rounded-md bg-slate-300 shadow-sm'></div>
-              <h3 className='mt-2 text-lg  text-gray-700'>{stream.name}</h3>
+              <h3 className='mt-2 text-lg  text-gray-700'>{stream.id}</h3>
             </div>
           </Link>
         ))}
 
-        <div className='relative z-50 flex w-[80%] justify-between pl-4'>
-          <button onClick={prevPage} disabled={currentPage <= 5}>
-            이전
-          </button>
-
-          {Array.from({ length: 5 }).map((_, i) => (
-            <button
-              key={i}
-              onClick={movePage}
-              className={joinClassName(
-                'rounded-sm py-2 px-3',
-                +currentPage === firstNum + i ? 'bg-blue-100' : 'cursor-pointer'
-              )}>
-              {numPages >= firstNum + i ? firstNum + i : ''}
-            </button>
-          ))}
-
-          <button onClick={nextPage} disabled={currentPage >= numPages}>
-            다음
-          </button>
-        </div>
+        <Pagination
+          totalCount={totalCount}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+        />
 
         <FloatingButton href='/live/create'>
           <svg
