@@ -7,12 +7,22 @@ async function handler(request: NextApiRequest, response: NextApiResponse<Respon
   const {
     session: { user },
     body: { name, description, price },
+    query: { page },
   } = request;
 
   if (request.method === 'GET') {
-    const streams = await client.stream.findMany();
-    response.json({ ok: true, streams });
+    if (!request.query.page) {
+      const streams = await client.stream.findMany();
+      response.json({ ok: true, streams });
+    } else {
+      const streams = await client.stream.findMany({
+        take: 20,
+        skip: 20 * (+page! - 1),
+      });
+      response.json({ ok: true, streams });
+    }
   }
+
   if (request.method === 'POST') {
     const stream = await client.stream.create({
       data: {

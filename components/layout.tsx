@@ -38,7 +38,7 @@ export default function Layout({ title, path, hasTabBar, children }: LayoutProps
         )}
         {title ? <span className='font-bold'>{title}</span> : null}
       </div>
-      <div className={joinClassName('mt-14 w-full max-w-md', hasTabBar ? 'pb-16' : '')}>
+      <div className={joinClassName('mt-14 w-full max-w-md', hasTabBar ? 'pb-[80px]' : '')}>
         {children}
       </div>
 

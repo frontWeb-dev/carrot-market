@@ -15,7 +15,7 @@ export default function FloatingButton({ children, href }: FloatingButton) {
   };
 
   return (
-    <div className='fixed bottom-24 flex w-full max-w-md justify-end border-transparent px-4'>
+    <div className='fixed bottom-24 z-0 flex w-full max-w-md justify-end border-transparent px-4'>
       <button
         onClick={onclick}
         className=' flex aspect-square w-14 cursor-pointer  items-center justify-center rounded-full border-0 border-transparent bg-orange-400 text-white shadow-xl transition-colors hover:bg-orange-500'>
