@@ -2,7 +2,7 @@ import type { NextPage } from 'next';
 import { Button, Input, Layout } from '@components';
 import { useForm } from 'react-hook-form';
 import { UserProps } from '@pages/profile';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import useMutation from '@libs/client/useMutation';
 import { useRouter } from 'next/router';
 
@@ -10,6 +10,7 @@ interface EditForm {
   name?: string;
   email?: string;
   phone?: string;
+  avatar?: FileList;
   formErrors?: string;
 }
 
@@ -19,6 +20,7 @@ interface EditResponse {
 }
 
 const EditProfile: NextPage = ({ user }: UserProps) => {
+  const [avatarPreview, setAvatarPreview] = useState('');
   const router = useRouter();
   const {
     register,
@@ -26,12 +28,15 @@ const EditProfile: NextPage = ({ user }: UserProps) => {
     setValue,
     setError,
     clearErrors,
+    watch,
     formState: { errors },
   } = useForm<EditForm>();
 
   const [editProfile, { data, loading }] = useMutation<EditResponse>('/api/user/me');
 
-  const onValid = ({ email, phone, name }: EditForm) => {
+  const avatar = watch('avatar');
+  const onValid = ({ email, phone, name, avatar }: EditForm) => {
+    console.log(avatar);
     if (loading) return;
     if (email === '' && phone === '') {
       return setError('formErrors', { message: '이메일이나 전화번호 중 하나가 필요합니다.' });
@@ -41,13 +46,19 @@ const EditProfile: NextPage = ({ user }: UserProps) => {
   };
 
   useEffect(() => {
+    if (avatar && avatar.length > 0) {
+      const file = avatar[0];
+      setAvatarPreview(URL.createObjectURL(file));
+    }
+  }, [avatar]);
+
+  useEffect(() => {
     if (user?.name) setValue('name', user.name);
     if (user?.email) setValue('email', user.email);
     if (user?.phone) setValue('phone', user.phone);
   }, [user, setValue]);
 
   useEffect(() => {
-    console.log(data);
     if (data && !data.ok) {
       return setError('formErrors', { message: data.message });
     }
@@ -63,12 +74,22 @@ const EditProfile: NextPage = ({ user }: UserProps) => {
     <Layout path='/profile' title='Edit Profile'>
       <form onSubmit={handleSubmit(onValid)} className='space-y-4 py-10 px-4'>
         <div className='flex items-center space-x-3'>
-          <div className='h-14 w-14 rounded-full bg-slate-500' />
+          {avatarPreview ? (
+            <img src={avatarPreview} className='h-14 w-14 rounded-full bg-slate-500' />
+          ) : (
+            <div className='h-14 w-14 rounded-full bg-slate-500' />
+          )}
           <label
             htmlFor='picture'
             className='cursor-pointer rounded-md border border-gray-300 py-2 px-3 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:ring-2 focus:ring-orange-500 focus:ring-offset-2'>
             Change
-            <input id='picture' type='file' className='hidden' accept='image/*' />
+            <input
+              {...register('avatar')}
+              id='picture'
+              type='file'
+              className='hidden'
+              accept='image/*'
+            />
           </label>
         </div>
         <Input register={register('name')} label='Name' name='name' type='text' required={false} />
