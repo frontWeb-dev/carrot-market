@@ -48,9 +48,15 @@ const ItemDetail: NextPage = () => {
     <Layout path='/'>
       <div className='px-4  pt-5 pb-10'>
         <div className='mb-8'>
-          <div className='h-72 bg-slate-300' />
+          <img
+            src={`https://imagedelivery.net/LWMO1sS6WZWolJI0z1rgvA/${data.product.image}/public`}
+            className='mx-auto h-72 w-auto bg-slate-300'
+          />
           <div className='flex cursor-pointer items-center space-x-3 border-t border-b py-3'>
-            <div className='h-12 w-12 rounded-full bg-slate-300' />
+            <img
+              src={`https://imagedelivery.net/LWMO1sS6WZWolJI0z1rgvA/${data.product.user.avatar}/public`}
+              className='h-12 w-12 rounded-full bg-slate-300'
+            />
             <div>
               <p className='text-sm font-medium text-gray-700'>{data.product.user.name}</p>
               <Link href={`/profile/${data.product.user.id}`}>
@@ -59,8 +65,8 @@ const ItemDetail: NextPage = () => {
             </div>
           </div>
           <div className='mt-5'>
-            <h1 className='text-3xl font-bold text-gray-900'>{data.product.name}</h1>
-            <span className='mt-3 block text-2xl text-gray-900'>${data.product.price}</span>
+            <h2 className='text-2xl font-bold text-gray-900'>{data.product.name}</h2>
+            <span className='mt-3 block text-xl text-gray-900'>${data.product.price}</span>
             <p className=' my-6 text-gray-700'>{data.product.description}</p>
             <div className='flex items-center justify-between space-x-2'>
               <Button large text='Talk to seller' />

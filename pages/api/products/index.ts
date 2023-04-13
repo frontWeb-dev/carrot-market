@@ -23,7 +23,7 @@ async function handler(request: NextApiRequest, response: NextApiResponse<Respon
 
   if (request.method === 'POST') {
     const {
-      body: { name, price, description },
+      body: { name, price, description, photoId },
       session: { user },
     } = request;
 
@@ -32,7 +32,7 @@ async function handler(request: NextApiRequest, response: NextApiResponse<Respon
         name,
         price: +price,
         description,
-        image: 'xx',
+        image: photoId,
         user: {
           connect: {
             id: user?.id,
