@@ -6,9 +6,13 @@ import { withApiSession } from '@libs/server/withSession';
 // 로그인 된 유저 정보 확인
 async function handler(request: NextApiRequest, response: NextApiResponse<ResponseType>) {
   if (request.method === 'GET') {
+    const {
+      session: { user },
+    } = request;
+
     const profile = await client.user.findUnique({
       where: {
-        id: request.session.user?.id,
+        id: user?.id,
       },
     });
 
@@ -23,13 +27,15 @@ async function handler(request: NextApiRequest, response: NextApiResponse<Respon
   if (request.method === 'POST') {
     const {
       session: { user },
-      body: { email, phone, name },
+      body: { email, phone, name, avatarId },
     } = request;
+
     const currentUser = await client.user.findUnique({
       where: {
         id: user?.id,
       },
     });
+
     if (email && email !== currentUser?.email) {
       const alreadyExists = Boolean(
         await client.user.findUnique({
@@ -55,7 +61,6 @@ async function handler(request: NextApiRequest, response: NextApiResponse<Respon
           email,
         },
       });
-      response.json({ ok: true });
     }
     if (phone && phone !== currentUser?.phone) {
       const alreadyExists = Boolean(
@@ -82,7 +87,6 @@ async function handler(request: NextApiRequest, response: NextApiResponse<Respon
           phone,
         },
       });
-      response.json({ ok: true });
     }
     if (name) {
       await client.user.update({
@@ -91,6 +95,16 @@ async function handler(request: NextApiRequest, response: NextApiResponse<Respon
         },
         data: {
           name,
+        },
+      });
+    }
+    if (avatarId) {
+      await client.user.update({
+        where: {
+          id: user?.id,
+        },
+        data: {
+          avatar: avatarId,
         },
       });
     }

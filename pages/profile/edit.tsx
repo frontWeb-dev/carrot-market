@@ -35,14 +35,26 @@ const EditProfile: NextPage = ({ user }: UserProps) => {
   const [editProfile, { data, loading }] = useMutation<EditResponse>('/api/user/me');
 
   const avatar = watch('avatar');
-  const onValid = ({ email, phone, name, avatar }: EditForm) => {
-    console.log(avatar);
+  const onValid = async ({ email, phone, name, avatar }: EditForm) => {
     if (loading) return;
     if (email === '' && phone === '') {
       return setError('formErrors', { message: '이메일이나 전화번호 중 하나가 필요합니다.' });
     }
 
-    editProfile({ email, phone, name });
+    if (avatar && avatar.length > 0) {
+      const { uploadURL } = await (await fetch(`/api/files`)).json();
+
+      // cloudflare에 이미지 업로드 하기
+      const form = new FormData();
+      form.append('file', avatar[0], user?.id + '');
+      const {
+        result: { id },
+      } = await (await fetch(uploadURL, { method: 'POST', body: form })).json();
+
+      editProfile({ email, phone, name, avatarId: id });
+    } else {
+      editProfile({ email, phone, name });
+    }
   };
 
   useEffect(() => {
@@ -56,6 +68,8 @@ const EditProfile: NextPage = ({ user }: UserProps) => {
     if (user?.name) setValue('name', user.name);
     if (user?.email) setValue('email', user.email);
     if (user?.phone) setValue('phone', user.phone);
+    if (user?.avatar)
+      setAvatarPreview(`https://imagedelivery.net/LWMO1sS6WZWolJI0z1rgvA/${user?.avatar}/avatar`);
   }, [user, setValue]);
 
   useEffect(() => {
