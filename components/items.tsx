@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface ItemProps {
   title: string;
@@ -15,9 +16,12 @@ export default function Items({ title, price, hearts, image, id }: ItemProps) {
       className='flex cursor-pointer justify-between border border-b px-4 py-5 '>
       <div className='flex space-x-4'>
         {image ? (
-          <img
-            src={`https://imagedelivery.net/LWMO1sS6WZWolJI0z1rgvA/${image}/avatar`}
+          <Image
+            width={80}
+            height={80}
             className='h-20 w-20 rounded-md bg-gray-400'
+            src={`https://imagedelivery.net/LWMO1sS6WZWolJI0z1rgvA/${image}/avatar`}
+            alt='사용자 프로필 이미지'
           />
         ) : (
           <div className='h-20 w-20 rounded-md bg-gray-400' />

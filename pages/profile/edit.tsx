@@ -5,6 +5,7 @@ import { UserProps } from '@pages/profile';
 import { useEffect, useState } from 'react';
 import useMutation from '@libs/client/useMutation';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 
 interface EditForm {
   name?: string;
@@ -89,7 +90,13 @@ const EditProfile: NextPage = ({ user }: UserProps) => {
       <form onSubmit={handleSubmit(onValid)} className='space-y-4 py-10 px-4'>
         <div className='flex items-center space-x-3'>
           {avatarPreview ? (
-            <img src={avatarPreview} className='h-14 w-14 rounded-full bg-slate-500' />
+            <Image
+              width={56}
+              height={56}
+              src={avatarPreview}
+              alt='사용자 프로필 이미지'
+              className='h-14 w-14 rounded-full bg-slate-500'
+            />
           ) : (
             <div className='h-14 w-14 rounded-full bg-slate-500' />
           )}

@@ -6,6 +6,7 @@ import { Product, User } from '@prisma/client';
 import { Button, Layout, Detail, Similar } from '@components';
 import useMutation from '@libs/client/useMutation';
 import { joinClassName } from '@libs/client/utils';
+import Image from 'next/image';
 
 interface ItemsWithUser extends Product {
   user: User;
@@ -48,14 +49,21 @@ const ItemDetail: NextPage = () => {
     <Layout path='/'>
       <div className='px-4  pt-5 pb-10'>
         <div className='mb-8'>
-          <img
-            src={`https://imagedelivery.net/LWMO1sS6WZWolJI0z1rgvA/${data.product.image}/public`}
-            className='mx-auto h-72 w-auto bg-slate-300'
-          />
+          <div className='relative h-72 w-auto'>
+            <Image
+              fill
+              className='mx-auto bg-slate-300  object-cover object-top'
+              src={`https://imagedelivery.net/LWMO1sS6WZWolJI0z1rgvA/${data.product.image}/public`}
+              alt={data.product.name}
+            />
+          </div>
           <div className='flex cursor-pointer items-center space-x-3 border-t border-b py-3'>
-            <img
-              src={`https://imagedelivery.net/LWMO1sS6WZWolJI0z1rgvA/${data.product.user.avatar}/public`}
+            <Image
+              width={48}
+              height={48}
               className='h-12 w-12 rounded-full bg-slate-300'
+              src={`https://imagedelivery.net/LWMO1sS6WZWolJI0z1rgvA/${data.product.user.avatar}/public`}
+              alt='사용자 프로필 이미지'
             />
             <div>
               <p className='text-sm font-medium text-gray-700'>{data.product.user.name}</p>

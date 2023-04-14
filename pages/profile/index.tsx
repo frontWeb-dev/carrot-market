@@ -4,6 +4,7 @@ import useSWR from 'swr';
 import { Review, User } from '@prisma/client';
 import { Layout } from '@components';
 import { joinClassName } from '@libs/client/utils';
+import Image from 'next/image';
 
 interface ReviewsWithUser extends Review {
   createBy: User;
@@ -26,8 +27,11 @@ const Profile: NextPage = ({ user }: UserProps) => {
       <div className='p-4'>
         <div className='flex items-center space-x-3'>
           {user?.avatar ? (
-            <img
+            <Image
+              width={64}
+              height={64}
               src={`https://imagedelivery.net/LWMO1sS6WZWolJI0z1rgvA/${user?.avatar}/avatar`}
+              alt='사용자 프로필 이미지'
               className='h-16 w-16 rounded-full bg-slate-500'
             />
           ) : (

@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import { Layout, Input, TextArea, Button } from '@components';
 import useMutation from '@libs/client/useMutation';
 import { Product } from '@prisma/client';
+import Image from 'next/image';
 
 interface UploadProductForm {
   name: string;
@@ -58,11 +59,16 @@ const Upload: NextPage = () => {
   return (
     <Layout path='/'>
       <form onSubmit={handleSubmit(onValid)} className='px-4 py-8'>
-        <div>
+        <div className='relative h-48 w-full'>
           {photoPreview ? (
-            <img src={photoPreview} className='h-46 aspect-video w-full' />
+            <Image
+              fill
+              src={photoPreview}
+              className='aspect-video object-contain'
+              alt='업로드 이미지'
+            />
           ) : (
-            <label className='flex h-48 w-full cursor-pointer items-center justify-center border-2 border-dashed border-gray-300 text-gray-600 hover:border-orange-500 hover:text-orange-500 '>
+            <label className='flex h-full w-full cursor-pointer items-center justify-center border-2 border-dashed border-gray-300 text-gray-600 hover:border-orange-500 hover:text-orange-500 '>
               <svg
                 className='h-12 w-12'
                 stroke='currentColor'
