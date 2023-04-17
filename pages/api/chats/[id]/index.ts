@@ -8,59 +8,51 @@ async function handler(request: NextApiRequest, response: NextApiResponse<Respon
   const {
     session: { user },
     query: { id },
-    body,
+    body: { seller },
   } = request;
 
-  if (!id) return response.json({ ok: false });
-
+  // chat
   if (request.method === 'GET') {
     const messages = await client.chat.findUnique({
       where: {
-        id: +id?.toString(),
+        id: +id?.toString()!,
       },
       include: {
         message: {
-          select: {
+          include: {
             user: true,
-            message: true,
           },
         },
-        seller: {
-          select: {
-            id: true,
-            name: true,
-            avatar: true,
-          },
-        },
-        shopper: {
-          select: {
-            id: true,
-            name: true,
-            avatar: true,
-          },
-        },
+        shopper: true,
+        seller: true,
       },
     });
 
     response.json({ ok: true, messages });
   }
 
+  // talk to seller
   if (request.method === 'POST') {
-    const message = await client.message.create({
+    const message = await client.chat.create({
       data: {
-        message: body.message,
-        stream: {
+        product: {
           connect: {
             id: +id?.toString()!,
           },
         },
-        user: {
+        seller: {
+          connect: {
+            id: seller,
+          },
+        },
+        shopper: {
           connect: {
             id: user?.id!,
           },
         },
       },
     });
+
     response.json({
       ok: true,
       message,

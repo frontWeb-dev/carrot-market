@@ -3,12 +3,40 @@ import { Layout, Message } from '@components';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import { UserProps } from '@pages/profile';
+import { useForm } from 'react-hook-form';
+import { MessageForm } from '@pages/live/[id]';
+import useMutation from '@libs/client/useMutation';
 
 const ChatDetail: NextPage = ({ user }: UserProps) => {
   const router = useRouter();
-  const { data } = useSWR(`/api/chats/${router.query.id}`, {
+  const { register, handleSubmit, reset } = useForm<MessageForm>();
+  const { data, mutate } = useSWR(`/api/chats/${router.query.id}`, {
     refreshInterval: 1000,
   });
+  const [sendMessage, { loading, data: sendMessageData }] = useMutation(
+    `/api/chats/${router.query.id}/message`
+  );
+
+  const onValid = (form: MessageForm) => {
+    if (loading) return;
+    reset();
+    mutate(
+      (prev) =>
+        prev &&
+        ({
+          ...prev,
+          messages: {
+            ...prev.message,
+            messages: [
+              ...prev.messages.message,
+              { id: Date.now(), message: form.message, user: { ...user } },
+            ],
+          },
+        } as any),
+      false
+    );
+    sendMessage(form);
+  };
 
   console.log(data);
 
@@ -17,20 +45,25 @@ const ChatDetail: NextPage = ({ user }: UserProps) => {
       path='/chats'
       title={
         data?.messages?.shopperId === user?.id
-          ? data?.messages?.seller.name
-          : data?.messages?.shopper.name
+          ? data?.messages?.seller?.name
+          : data?.messages?.shopper?.name
       }>
       <div className='space-y-4 py-5 px-4 pb-16'>
-        {data?.messages?.message.map((message) => (
+        {data?.messages?.message?.map((message) => (
           <Message
             key={message.id}
             message={message.message}
             reversed={message.user.id === user?.id}
           />
         ))}
-        <form className='fixed inset-x-0 bottom-0  bg-white pt-2 pb-6'>
+        <form
+          onSubmit={handleSubmit(onValid)}
+          className='fixed inset-x-0 bottom-0  bg-white pt-2 pb-6'>
           <div className='relative mx-auto flex w-full max-w-md items-center px-4'>
             <input
+              {...register('message', {
+                required: true,
+              })}
               type='text'
               name='message'
               className='w-full rounded-full border-gray-300 pr-12 shadow-sm focus:border-orange-500 focus:outline-none focus:ring-orange-500'

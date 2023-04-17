@@ -9,41 +9,54 @@ async function handler(request: NextApiRequest, response: NextApiResponse<Respon
       session: { user },
     } = request;
 
-    const sellerChats = await client.chat.findMany({
+    const sellerData = await client.chat.findMany({
       where: {
         sellerId: user?.id,
       },
       include: {
-        shopper: {
+        message: {
           select: {
-            id: true,
-            name: true,
-            avatar: true,
+            user: {
+              select: {
+                id: true,
+                name: true,
+                avatar: true,
+              },
+            },
+            message: true,
           },
         },
-        message: true,
+        seller: true,
+        shopper: true,
       },
     });
 
-    const shopperChats = await client.chat.findMany({
+    const shopperData = await client.chat.findMany({
       where: {
         shopperId: user?.id,
       },
       include: {
-        seller: {
+        message: {
           select: {
-            id: true,
-            name: true,
-            avatar: true,
+            user: {
+              select: {
+                id: true,
+                name: true,
+                avatar: true,
+              },
+            },
+            message: true,
           },
         },
+        seller: true,
+        shopper: true,
       },
     });
 
     response.json({
       ok: true,
-      sellerChats,
-      shopperChats,
+      sellerData,
+      shopperData,
     });
   }
 

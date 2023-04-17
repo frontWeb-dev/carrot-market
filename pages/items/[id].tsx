@@ -22,6 +22,7 @@ interface ItemDetailResponse {
 const ItemDetail: NextPage = () => {
   const router = useRouter();
   const { mutate: unboundMutate } = useSWRConfig();
+  const [talkSeller] = useMutation(`/api/chats/${router.query.id}`);
   const {
     data,
     isLoading,
@@ -34,6 +35,10 @@ const ItemDetail: NextPage = () => {
     if (!data) return;
     boundMutate({ ...data, isLiked: !data.isLiked }, false);
     toggleFav({});
+  };
+
+  const clickTalk = () => {
+    talkSeller({ seller: data?.product.user.id });
   };
 
   if (isLoading || !data) {
@@ -77,7 +82,7 @@ const ItemDetail: NextPage = () => {
             <span className='mt-3 block text-xl text-gray-900'>${data.product.price}</span>
             <p className=' my-6 text-gray-700'>{data.product.description}</p>
             <div className='flex items-center justify-between space-x-2'>
-              <Button large text='Talk to seller' />
+              <Button large text='Talk to seller' onClick={clickTalk} />
               <button
                 onClick={onFavoriteClick}
                 className={joinClassName(
