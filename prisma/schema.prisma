@@ -165,15 +165,18 @@ model Favorite {
 }
 
 model Stream {
-  id          Int       @id @default(autoincrement())
-  createAt    DateTime  @default(now())
-  updateAt    DateTime  @updatedAt
-  name        String
-  description String    @db.MediumText
-  price       Int
-  user        User      @relation(fields: [userId], references: [id])
-  userId      Int
-  message     Message[]
+  id            Int       @id @default(autoincrement())
+  createAt      DateTime  @default(now())
+  updateAt      DateTime  @updatedAt
+  name          String
+  description   String    @db.MediumText
+  price         Int
+  user          User      @relation(fields: [userId], references: [id])
+  userId        Int
+  message       Message[]
+  cloudflareId  String
+  cloudflareUrl String?
+  cloudflareKey String?
 
   @@index([userId])
 }

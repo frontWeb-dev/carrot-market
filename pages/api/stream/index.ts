@@ -16,16 +16,37 @@ async function handler(request: NextApiRequest, response: NextApiResponse<Respon
       response.json({ ok: true, streams });
     } else {
       const streams = await client.stream.findMany({
-        take: 20,
-        skip: 20 * (+page! - 1),
+        take: 10,
+        skip: 10 * (+page! - 1),
       });
       response.json({ ok: true, streams });
     }
   }
 
   if (request.method === 'POST') {
+    const {
+      result: {
+        uid,
+        rtmps: { streamKey, url },
+      },
+    } = await (
+      await fetch(
+        `https://api.cloudflare.com/client/v4/accounts/${process.env.CF_ID}/stream/live_inputs`,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${process.env.CF_STREAM_TOKEN}`,
+          },
+          body: `{"meta": {"name":"${name}"},"recording": { "mode": "automatic", "timeoutSeconds": 10}}`,
+        }
+      )
+    ).json();
+
     const stream = await client.stream.create({
       data: {
+        cloudflareId: uid,
+        cloudflareKey: streamKey,
+        cloudflareUrl: url,
         name,
         price: +price,
         description,
@@ -36,6 +57,7 @@ async function handler(request: NextApiRequest, response: NextApiResponse<Respon
         },
       },
     });
+
     response.json({
       ok: true,
       stream,

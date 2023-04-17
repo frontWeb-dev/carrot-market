@@ -1,5 +1,6 @@
 import type { NextPage } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import useSWR from 'swr';
 import { Stream } from '@prisma/client';
 import { Layout, FloatingButton } from '@components';
@@ -19,6 +20,7 @@ const Live: NextPage = () => {
 
   const totalCount = data?.streams?.length!;
 
+  console.log(totalCount);
   if (!data) return <div>Loading</div>;
 
   return (
@@ -28,17 +30,25 @@ const Live: NextPage = () => {
           <Link key={stream.id} href={`/live/${stream.id}`}>
             <div className='p-4'>
               {/* aspect-video : 비디오 비율 지정 (16:9) */}
-              <div className='aspect-video w-full rounded-md bg-slate-300 shadow-sm'></div>
-              <h3 className='mt-2 text-lg  text-gray-700'>{stream.id}</h3>
+              <div className='relative aspect-video w-full overflow-hidden rounded-md bg-slate-300 shadow-sm'>
+                <Image
+                  src={`https://videodelivery.net/${stream.cloudflareId}/thumbnails/thumbnail.jpg?height=270`}
+                  alt='라이브 썸네일'
+                  fill
+                />
+              </div>
+              <h3 className='mt-2 text-lg  text-gray-700'>{stream.name}</h3>
             </div>
           </Link>
         ))}
 
-        <Pagination
-          totalCount={totalCount}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-        />
+        {totalCount > 10 && (
+          <Pagination
+            totalCount={totalCount}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
+        )}
 
         <FloatingButton href='/live/create'>
           <svg

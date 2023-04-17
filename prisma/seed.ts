@@ -4,9 +4,12 @@ const client = new PrismaClient();
 
 // 가짜 데이터 생성
 async function main() {
-  [...Array.from(Array(500).keys())].forEach(async (item) => {
+  [...Array.from(Array(50).keys())].forEach(async (item) => {
     const stream = await client.stream.create({
       data: {
+        cloudflareId: '',
+        cloudflareKey: '',
+        cloudflareUrl: '',
         name: String(item),
         description: String(item),
         price: item,

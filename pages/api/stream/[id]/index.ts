@@ -6,6 +6,7 @@ import { withApiSession } from '@libs/server/withSession';
 async function handler(request: NextApiRequest, response: NextApiResponse<ResponseType>) {
   const {
     query: { id },
+    session: { user },
   } = request;
 
   if (!id) return response.status(400).json({ ok: false });
@@ -29,6 +30,13 @@ async function handler(request: NextApiRequest, response: NextApiResponse<Respon
       },
     },
   });
+
+  const isOwner = stream?.userId === user?.id;
+
+  if (stream && !isOwner) {
+    stream.cloudflareKey = 'xxxxx';
+    stream.cloudflareUrl = 'xxxxx';
+  }
 
   response.json({ ok: true, stream });
 }

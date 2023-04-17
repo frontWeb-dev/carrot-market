@@ -4,7 +4,6 @@ import useSWR from 'swr';
 import { useRouter } from 'next/router';
 import { Stream } from '@prisma/client';
 import { UserProps } from '@pages/profile';
-import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import useMutation from '@libs/client/useMutation';
 
@@ -19,6 +18,9 @@ interface StreamMessage {
 
 interface StreamWithMessage extends Stream {
   message: StreamMessage[];
+  cloudflareId: string;
+  cloudflareUrl: string;
+  cloudflareKey: string;
 }
 
 interface StreamResponse {
@@ -61,17 +63,35 @@ const Live: NextPage = ({ user }: UserProps) => {
         } as any),
       false
     );
-    // sendMessage(form);
+    sendMessage(form);
   };
   return (
     <Layout path='/live'>
       <div className='space-y-4 py-5  px-4'>
-        <div className='aspect-video w-full rounded-md bg-slate-300 shadow-sm' />
+        {data?.stream?.cloudflareId ? (
+          <iframe
+            className='aspect-video w-full rounded-md bg-slate-300 shadow-sm'
+            src={`https://iframe.videodelivery.net/${data?.stream.cloudflareId}`}
+            allow='accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;'
+            allowFullScreen={true}></iframe>
+        ) : null}
+
         <div className='mt-5'>
           <h1 className='text-3xl font-bold text-gray-900'>{data?.stream?.name}</h1>
           <span className='mt-3 block text-2xl text-gray-900'>${data?.stream?.price}</span>
           <p className=' my-6 text-gray-700'>{data?.stream?.description}</p>
+
+          <div className='flex flex-col space-y-3 overflow-scroll rounded-md border bg-slate-50 p-5'>
+            <span>Stream Keys (secret)</span>
+            <span>
+              <span className='font-medium text-gray-800'>URL:</span> {data?.stream.cloudflareUrl}
+            </span>
+            <span className='text-gray-500'>
+              <span className='font-medium text-gray-800'>Key:</span> {data?.stream.cloudflareKey}
+            </span>
+          </div>
         </div>
+
         <div>
           <h2 className='text-2xl font-bold text-gray-900'>Live Chat</h2>
           <div className='h-[50vh] space-y-4 overflow-y-scroll py-10  px-4 pb-16'>
