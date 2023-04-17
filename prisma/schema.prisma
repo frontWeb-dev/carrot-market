@@ -17,25 +17,28 @@ datasource db {
 }
 
 model User {
-  id              Int         @id @default(autoincrement())
-  phone           String?     @unique
-  email           String?     @unique
+  id              Int           @id @default(autoincrement())
+  phone           String?       @unique
+  email           String?       @unique
   name            String
   avatar          String?
-  createAt        DateTime    @default(now())
-  updateAt        DateTime    @updatedAt
+  createAt        DateTime      @default(now())
+  updateAt        DateTime      @updatedAt
   token           Token[]
   product         Product[]
   favorite        Favorite[]
   posts           Post[]
   answer          Answer[]
   wonderings      Wondering[]
-  writtenReviews  Review[]    @relation(name: "writtenReviews")
-  receivedReviews Review[]    @relation(name: "receivedReviews")
+  writtenReviews  Review[]      @relation(name: "writtenReviews")
+  receivedReviews Review[]      @relation(name: "receivedReviews")
   sale            Sale[]
   purchase        Purchase[]
   stream          Stream[]
   message         Message[]
+  seller          Chat[]        @relation(name: "seller")
+  shopper         Chat[]        @relation(name: "shopper")
+  chatMessage     ChatMessage[]
 }
 
 model Token {
@@ -50,18 +53,19 @@ model Token {
 }
 
 model Product {
-  id          Int        @id @default(autoincrement())
-  createAt    DateTime   @default(now())
-  updateAt    DateTime   @updatedAt
-  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id          Int           @id @default(autoincrement())
+  createAt    DateTime      @default(now())
+  updateAt    DateTime      @updatedAt
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      Int
   image       String
   name        String
   price       Int
-  description String     @db.MediumText
+  description String        @db.MediumText
   favorite    Favorite[]
   sale        Sale[]
   purchase    Purchase[]
+  ChatMessage ChatMessage[]
 
   @@index([userId])
 }
@@ -195,22 +199,33 @@ model Message {
   @@index([streamId])
 }
 
-// model Record {
-//   id        Int      @id @default(autoincrement())
-//   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-//   userId    Int
-//   product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
-//   productId Int
-//   createAt  DateTime @default(now())
-//   updateAt  DateTime @updatedAt
-//   kind      Kind
+model Chat {
+  id        Int           @id @default(autoincrement())
+  createAt  DateTime      @default(now())
+  updateAt  DateTime      @updatedAt
+  seller    User          @relation(name: "seller", fields: [sellerId], references: [id], onDelete: Cascade)
+  sellerId  Int
+  shopper   User          @relation(name: "shopper", fields: [shopperId], references: [id])
+  shopperId Int
+  message   ChatMessage[]
 
-//   @@index([productId])
-//   @@index([userId])
-// }
+  @@index([shopperId])
+  @@index([sellerId])
+}
 
-// enum Kind {
-//   Purchase
-//   Sale
-//   Favorite
-// }
+model ChatMessage {
+  id        Int      @id @default(autoincrement())
+  createAt  DateTime @default(now())
+  updateAt  DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  message   String   @db.MediumText
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId Int
+  chat      Chat?    @relation(fields: [chatId], references: [id])
+  chatId    Int?
+
+  @@index([userId])
+  @@index([productId])
+  @@index([chatId])
+}
