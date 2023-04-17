@@ -9,11 +9,12 @@ interface PaginationProps {
 
 const Pagination = ({ totalCount, currentPage, setCurrentPage }: PaginationProps) => {
   const pageCount = 5;
-  const totalPage = Math.ceil(totalCount / 20);
+  const totalPage = Math.ceil(totalCount / 10);
   const pageGroup = Math.ceil(currentPage / pageCount);
-  let lastNum = pageGroup * 5;
+  let lastNum = pageGroup * pageCount;
   if (lastNum > totalPage) lastNum = totalPage;
-  const firstNum = lastNum - (pageCount - 1);
+  let firstNum = lastNum - (pageCount - 1);
+  if (lastNum < pageCount) firstNum = lastNum - (lastNum - 1);
 
   const prevPage = () => {
     setCurrentPage(firstNum - 1);
@@ -29,7 +30,7 @@ const Pagination = ({ totalCount, currentPage, setCurrentPage }: PaginationProps
   };
 
   return (
-    <div className='relative z-50 flex w-[80%] justify-between pl-4'>
+    <div className='relative z-50 flex w-[80%] justify-center space-x-4 pl-4'>
       {firstNum - 1 > 0 && <button onClick={prevPage}>이전</button>}
 
       {Array.from({ length: 5 }).map((_, i) => (
