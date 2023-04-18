@@ -4,7 +4,7 @@ import ProductList from '@components/ProductList';
 
 const Liked: NextPage = () => {
   return (
-    <Layout title='관심 내역' path='/profile'>
+    <Layout title='관심 내역' seoTitle='Like List' path='/profile'>
       <div className='flex flex-col'>
         <ProductList kind='favorites' />
       </div>

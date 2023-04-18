@@ -66,7 +66,7 @@ const Live: NextPage = ({ user }: UserProps) => {
     sendMessage(form);
   };
   return (
-    <Layout path='/live'>
+    <Layout path='/live' seoTitle='Live Detail'>
       <div className='space-y-4 py-5  px-4'>
         {data?.stream?.cloudflareId ? (
           <iframe

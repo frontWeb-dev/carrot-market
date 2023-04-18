@@ -19,10 +19,7 @@ const Home: NextPage = () => {
   const { data } = useSWR<ProductResponse>('/api/products');
 
   return (
-    <Layout title='캐럿 마켓' hasTabBar>
-      <Head>
-        <title>Home</title>
-      </Head>
+    <Layout title='캐럿 마켓' seoTitle='Home' hasTabBar>
       <div className='flex  flex-col pb-10'>
         {data?.products?.map((product) => (
           <Link key={product.id} href={`/items/${product.id}`} legacyBehavior>

@@ -4,7 +4,7 @@ import ProductList from '@components/ProductList';
 
 const Sold: NextPage = () => {
   return (
-    <Layout title='판매 내역' path='/profile'>
+    <Layout title='판매 내역' seoTitle='Sold List' path='/profile'>
       <div className='flex flex-col'>
         <ProductList kind='sales' />
       </div>

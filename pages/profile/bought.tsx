@@ -4,7 +4,7 @@ import ProductList from '@components/ProductList';
 
 const Bought: NextPage = () => {
   return (
-    <Layout title='구매 내역' path='/profile'>
+    <Layout title='구매 내역' seoTitle='Buy List' path='/profile'>
       <div className='flex flex-col'>
         <ProductList kind='purchases' />
       </div>

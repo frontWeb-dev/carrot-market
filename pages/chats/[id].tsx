@@ -67,7 +67,8 @@ const ChatDetail: NextPage = ({ user }: UserProps) => {
         data?.messages?.shopperId === user?.id
           ? data?.messages?.seller?.name
           : data?.messages?.shopper?.name
-      }>
+      }
+      seoTitle='Chat Detail'>
       <div className='space-y-4 py-5 px-4 pb-16'>
         {data?.messages?.message?.map((message) => (
           <Message

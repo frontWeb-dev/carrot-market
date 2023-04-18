@@ -20,7 +20,7 @@ const Chats: NextPage = () => {
 
   console.log(data);
   return (
-    <Layout title='채팅' hasTabBar>
+    <Layout title='채팅' seoTitle='Chats' hasTabBar>
       <div className='divide-y-[1px] p-4'>
         {data?.sellerData?.map((chat) => (
           <Link key={chat.id} href={`/chats/${chat.id}`}>

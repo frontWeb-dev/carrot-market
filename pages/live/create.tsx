@@ -33,7 +33,7 @@ const Create: NextPage = () => {
   }, [data, router]);
 
   return (
-    <Layout path='/live' title='Go Live'>
+    <Layout path='/live' title='Go Live' seoTitle='Create Live'>
       <form onSubmit={handleSubmit(onValid)} className=' space-y-4 py-10 px-4'>
         <Input
           register={register('name', { required: true })}

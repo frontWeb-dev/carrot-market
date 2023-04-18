@@ -24,7 +24,7 @@ const Live: NextPage = () => {
   if (!data) return <div>Loading</div>;
 
   return (
-    <Layout title='라이브' hasTabBar>
+    <Layout title='라이브' seoTitle='Live' hasTabBar>
       <div className='space-y-4 pb-10'>
         {limitData?.streams?.map((stream) => (
           <Link key={stream.id} href={`/live/${stream.id}`}>

@@ -43,7 +43,7 @@ const ItemDetail: NextPage = () => {
 
   if (isLoading || !data) {
     return (
-      <Layout path='/'>
+      <Layout path='/' seoTitle='Loading'>
         <Detail />
         <Similar />
       </Layout>
@@ -51,7 +51,7 @@ const ItemDetail: NextPage = () => {
   }
 
   return (
-    <Layout path='/'>
+    <Layout path='/' seoTitle='Product Detail'>
       <div className='px-4  pt-5 pb-10'>
         <div className='mb-8'>
           <div className='relative h-72 w-auto'>

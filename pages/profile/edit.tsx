@@ -86,7 +86,7 @@ const EditProfile: NextPage = ({ user }: UserProps) => {
   }, [data, router]);
 
   return (
-    <Layout path='/profile' title='Edit Profile'>
+    <Layout path='/profile' title='Edit Profile' seoTitle='Edit Profile'>
       <form onSubmit={handleSubmit(onValid)} className='space-y-4 py-10 px-4'>
         <div className='flex items-center space-x-3'>
           {avatarPreview ? (

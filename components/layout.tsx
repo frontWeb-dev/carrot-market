@@ -1,4 +1,5 @@
 import { joinClassName } from '@libs/client/utils';
+import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
@@ -6,10 +7,11 @@ interface LayoutProps {
   title?: string;
   path?: string;
   hasTabBar?: boolean;
+  seoTitle: string;
   children: React.ReactNode;
 }
 
-export default function Layout({ title, path, hasTabBar, children }: LayoutProps) {
+export default function Layout({ title, seoTitle, path, hasTabBar, children }: LayoutProps) {
   const router = useRouter();
   const goToBack = (path: string) => {
     router.push(path);
@@ -17,6 +19,9 @@ export default function Layout({ title, path, hasTabBar, children }: LayoutProps
 
   return (
     <div className='relative'>
+      <Head>
+        <title>{seoTitle} | Carrot Mearket</title>
+      </Head>
       <div className='fixed top-0 flex h-14 w-full max-w-md items-center justify-center border-b bg-white px-6 text-lg font-medium text-gray-700 shadow-sm'>
         {path && (
           <button onClick={() => goToBack(path)} className='absolute left-4'>

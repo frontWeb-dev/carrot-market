@@ -33,7 +33,7 @@ const Write: NextPage = () => {
   }, [data, router]);
 
   return (
-    <Layout path='/community' title='Write Post'>
+    <Layout path='/community' seoTitle='Write' title='Write Post'>
       <form onSubmit={handleSubmit(onValid)} className='space-y-4 p-4'>
         <TextArea
           register={register('question', {
