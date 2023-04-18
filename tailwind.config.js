@@ -4,6 +4,7 @@ module.exports = {
     // 어디서 사용할 것인지 알려주기
     './pages/**/*.{js,jsx,ts,tsx}',
     './components/**/*.{js,jsx,ts,tsx}',
+    './styles/**/*.{scss, css}',
   ],
   theme: {
     extend: {
