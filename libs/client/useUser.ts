@@ -2,6 +2,9 @@ import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import { useState, useEffect } from 'react';
 import { User } from '@prisma/client';
+import { withIronSessionSsr } from 'iron-session/next/dist';
+import { NextPageContext } from 'next';
+import { withSsrSession } from '@libs/server/withSession';
 
 interface ProfileResponse {
   ok: boolean;
