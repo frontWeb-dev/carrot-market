@@ -18,8 +18,8 @@ async function handler(request: NextApiRequest, response: NextApiResponse<Respon
       query: { latitude, longitude },
     } = request;
 
-    const latitudeParse = parseFloat(latitude.toString());
-    const longitudeParse = parseFloat(longitude.toString());
+    const latitudeParse = parseFloat(latitude!.toString());
+    const longitudeParse = parseFloat(longitude!.toString());
 
     const posts = await client.post.findMany({
       include: {
