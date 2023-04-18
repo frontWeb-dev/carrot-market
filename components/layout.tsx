@@ -16,11 +16,11 @@ export default function Layout({ title, seoTitle, path, hasTabBar, children }: L
   const goToBack = (path: string) => {
     router.push(path);
   };
-
+  const seo = `${seoTitle} | Carrot Market`;
   return (
     <div className='relative'>
       <Head>
-        <title>{seoTitle} | Carrot Mearket</title>
+        <title>{seo}</title>
       </Head>
       <div className='fixed top-0 flex h-14 w-full max-w-md items-center justify-center border-b bg-white px-6 text-lg font-medium text-gray-700 shadow-sm'>
         {path && (
