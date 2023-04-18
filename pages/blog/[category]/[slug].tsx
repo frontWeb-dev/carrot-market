@@ -1,5 +1,5 @@
 import { GetStaticProps, NextPage } from 'next/types';
-import { readdirSync } from 'fs';
+import { readFileSync, readdirSync } from 'fs';
 import matter from 'gray-matter';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse/lib';
@@ -17,8 +17,10 @@ const Post: NextPage<{ post: string; data: any }> = ({ post, data }) => {
 //  페이지에서 동적인 URL을 갖는 페이지에서 getStaticProps를 사용할 때 필요
 export function getStaticPaths() {
   const files = readdirSync('./posts').map((file) => {
+    const content = readFileSync(`./posts/${file}`, 'utf-8');
+    const { category } = matter(content).data;
     const [name, _] = file.split('.');
-    return { params: { slug: name } };
+    return { params: { category, slug: name } };
   });
 
   return {
@@ -28,6 +30,7 @@ export function getStaticPaths() {
 }
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
+  console.log(ctx);
   const { content, data } = matter.read(`./posts/${ctx?.params?.slug}.md`);
   const { value } = await unified().use(remarkParse).use(remarkHtml).process(content);
 

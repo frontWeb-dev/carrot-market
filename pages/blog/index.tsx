@@ -16,7 +16,7 @@ const Blog: NextPage<{ posts: BlogProps[] }> = ({ posts }) => {
       <h1 className='text-lg font-bold'>Latest Posts</h1>
       {posts.map((post, index) => (
         <div key={index}>
-          <Link href={`/blog/${post.slug}`}>
+          <Link href={`/blog/${post.category}/${post.slug}`}>
             <p>{post.title}</p>
             <p>{post.date}</p>
             <p>{post.category}</p>
