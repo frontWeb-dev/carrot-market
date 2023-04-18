@@ -6,16 +6,38 @@ import { UserProps } from '@pages/profile';
 import { useForm } from 'react-hook-form';
 import { MessageForm } from '@pages/live/[id]';
 import useMutation from '@libs/client/useMutation';
+import { Chat, ChatMessage, User } from '@prisma/client';
+
+interface messageWithUser extends ChatMessage {
+  id: number;
+  message: string;
+  user: {
+    id: number;
+    phone?: string;
+    email?: string;
+    name: string;
+    avatar?: string;
+  };
+}
+
+interface chatWithUser extends Chat {
+  message: messageWithUser[];
+  seller: User;
+  shopper: User;
+}
+
+interface ChatResult {
+  ok: boolean;
+  messages: chatWithUser;
+}
 
 const ChatDetail: NextPage = ({ user }: UserProps) => {
   const router = useRouter();
   const { register, handleSubmit, reset } = useForm<MessageForm>();
-  const { data, mutate } = useSWR(`/api/chats/${router.query.id}`, {
+  const { data, mutate } = useSWR<ChatResult>(`/api/chats/${router.query.id}`, {
     refreshInterval: 1000,
   });
-  const [sendMessage, { loading, data: sendMessageData }] = useMutation(
-    `/api/chats/${router.query.id}/message`
-  );
+  const [sendMessage, { loading }] = useMutation(`/api/chats/${router.query.id}/message`);
 
   const onValid = (form: MessageForm) => {
     if (loading) return;
@@ -26,7 +48,7 @@ const ChatDetail: NextPage = ({ user }: UserProps) => {
         ({
           ...prev,
           messages: {
-            ...prev.message,
+            ...prev.messages,
             messages: [
               ...prev.messages.message,
               { id: Date.now(), message: form.message, user: { ...user } },
@@ -37,8 +59,6 @@ const ChatDetail: NextPage = ({ user }: UserProps) => {
     );
     sendMessage(form);
   };
-
-  console.log(data);
 
   return (
     <Layout
