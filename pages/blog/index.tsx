@@ -10,6 +10,7 @@ interface BlogProps {
   category: string;
   slug: string;
 }
+
 const Blog: NextPage<{ posts: BlogProps[] }> = ({ posts }) => {
   return (
     <Layout title='blog' seoTitle='Blog'>

@@ -134,4 +134,5 @@ const Profile: NextPage = ({ user }: UserProps) => {
     </Layout>
   );
 };
+
 export default Profile;

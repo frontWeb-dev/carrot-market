@@ -49,6 +49,8 @@ async function handler(request: NextApiRequest, response: NextApiResponse<Respon
       },
     });
 
+    // ISR - 새로운 글이 등록되면, /community 페이지 재생성
+
     response.json({
       ok: true,
       posts,
@@ -73,6 +75,9 @@ async function handler(request: NextApiRequest, response: NextApiResponse<Respon
         },
       },
     });
+
+    await response.revalidate('/community');
+
     response.json({
       ok: true,
       post,
