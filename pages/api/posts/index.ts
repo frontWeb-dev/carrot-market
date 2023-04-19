@@ -12,14 +12,14 @@ import { withApiSession } from '@libs/server/withSession';
     question과 session user id를 연결하여 데이터 생성 
 */
 
-async function handler(request: NextApiRequest, response: NextApiResponse<ResponseType>) {
-  if (request.method === 'GET') {
+async function handler(req: NextApiRequest, res: NextApiResponse<ResponseType>) {
+  if (req.method === 'GET') {
     const {
       query: { latitude, longitude },
-    } = request;
+    } = req;
 
-    const latitudeParse = parseFloat(latitude!.toString());
-    const longitudeParse = parseFloat(longitude!.toString());
+    const parsedLatitude = parseFloat(latitude!.toString());
+    const parsedLongitue = parseFloat(longitude!.toString());
 
     const posts = await client.post.findMany({
       include: {
@@ -32,36 +32,33 @@ async function handler(request: NextApiRequest, response: NextApiResponse<Respon
         },
         _count: {
           select: {
-            answers: true,
             wondering: true,
+            answers: true,
           },
         },
       },
       where: {
         latitude: {
-          gte: latitudeParse - 0.01,
-          lte: latitudeParse + 0.01,
+          gte: parsedLatitude - 0.01,
+          lte: parsedLatitude + 0.01,
         },
         longitude: {
-          gte: longitudeParse - 0.01,
-          lte: longitudeParse + 0.01,
+          gte: parsedLongitue - 0.01,
+          lte: parsedLongitue + 0.01,
         },
       },
     });
-
-    // ISR - 새로운 글이 등록되면, /community 페이지 재생성
-
-    response.json({
+    res.json({
       ok: true,
       posts,
     });
   }
 
-  if (request.method === 'POST') {
+  if (req.method === 'POST') {
     const {
       body: { question, latitude, longitude },
       session: { user },
-    } = request;
+    } = req;
 
     const post = await client.post.create({
       data: {
@@ -76,9 +73,9 @@ async function handler(request: NextApiRequest, response: NextApiResponse<Respon
       },
     });
 
-    await response.revalidate('/community');
+    await res.revalidate('/community');
 
-    response.json({
+    res.json({
       ok: true,
       post,
     });

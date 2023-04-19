@@ -5,6 +5,8 @@ import useSWR from 'swr';
 import { Post, User } from '@prisma/client';
 import useCoords from '@libs/client/useCoords';
 import client from '@libs/server/client';
+import { useEffect, useState } from 'react';
+import { UserProps } from '@pages/profile';
 
 interface PostsWithUser extends Post {
   user: User;
@@ -15,22 +17,24 @@ interface PostsWithUser extends Post {
 }
 
 interface PostsResponse {
+  user: UserProps;
   posts: PostsWithUser[];
 }
 
 const Community: NextPage<PostsResponse> = ({ posts }) => {
+  const [sortData, setSortData] = useState<PostsWithUser[]>([]);
+  useEffect(() => {
+    setSortData(posts.sort((a, b) => b.id - a.id));
+  }, [posts]);
   // const { latitude, longitude } = useCoords();
   // const { data } = useSWR<PostsResponse>(
   //   latitude && longitude ? `/api/posts?latitude=${latitude}&longitude=${longitude}` : null
   // );
 
-  const sortPosts = posts.sort((a, b) => b.id - a.id);
-  console.log(sortPosts);
-
   return (
     <Layout title='동네 생활' seoTitle='Community' hasTabBar>
       <div className='space-y-8 py-5'>
-        {sortPosts?.map((post) => (
+        {sortData?.map((post) => (
           <Link key={post.id} href={`/community/${post.id}`}>
             <div className='mb-4 flex cursor-pointer flex-col items-start px-4'>
               <span className='flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-semibold text-gray-600'>
@@ -100,11 +104,8 @@ const Community: NextPage<PostsResponse> = ({ posts }) => {
 
 // build 시 한번만 실행
 export async function getStaticProps() {
-  console.log('Build');
-  const posts = await client.post.findMany({
-    include: { user: true },
-  });
-
+  console.log('BUILDING COMM. STATICALLY');
+  const posts = await client.post.findMany({ include: { user: true } });
   return {
     props: {
       posts: JSON.parse(JSON.stringify(posts)),

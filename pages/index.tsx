@@ -17,8 +17,7 @@ interface ProductResponse {
   products: ProductWithCount[];
 }
 
-const Home: NextPage = ({ user }: UserProps) => {
-  console.log(user);
+const Home: NextPage = () => {
   const { data } = useSWR<ProductResponse>('/api/products');
 
   return (
