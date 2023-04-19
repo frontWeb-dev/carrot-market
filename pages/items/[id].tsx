@@ -22,7 +22,6 @@ interface ItemDetailResponse {
 }
 
 const ItemDetail: NextPage<ItemDetailResponse> = ({ product, relatedProducts, isLiked }) => {
-  console.log(product.user);
   const router = useRouter();
   const { mutate: unboundMutate } = useSWRConfig();
   const [talkSeller] = useMutation(`/api/chats/${router.query.id}`);
@@ -53,6 +52,14 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({ product, relatedProducts, is
     );
   }
 
+  if (router.isFallback) {
+    return (
+      <Layout path='/' seoTitle='Loading'>
+        <Detail />
+        <Similar />
+      </Layout>
+    );
+  }
   return (
     <Layout path='/' seoTitle='Product Detail'>
       <div className='px-4  pt-5 pb-10'>
@@ -132,7 +139,7 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({ product, relatedProducts, is
 export const getStaticPaths: GetStaticPaths = () => {
   return {
     paths: [],
-    fallback: 'blocking',
+    fallback: true,
   };
 };
 
