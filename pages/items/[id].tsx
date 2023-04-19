@@ -1,4 +1,4 @@
-import type { NextPage } from 'next';
+import type { GetStaticPaths, NextPage } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import useSWR, { useSWRConfig } from 'swr';
@@ -7,6 +7,8 @@ import { Button, Layout, Detail, Similar } from '@components';
 import useMutation from '@libs/client/useMutation';
 import { joinClassName } from '@libs/client/utils';
 import Image from 'next/image';
+import { GetStaticProps } from 'next/types';
+import client from '@libs/server/client';
 
 interface ItemsWithUser extends Product {
   user: User;
@@ -19,7 +21,8 @@ interface ItemDetailResponse {
   relatedProducts: Product[];
 }
 
-const ItemDetail: NextPage = () => {
+const ItemDetail: NextPage<ItemDetailResponse> = ({ product, relatedProducts, isLiked }) => {
+  console.log(product.user);
   const router = useRouter();
   const { mutate: unboundMutate } = useSWRConfig();
   const [talkSeller] = useMutation(`/api/chats/${router.query.id}`);
@@ -58,8 +61,8 @@ const ItemDetail: NextPage = () => {
             <Image
               fill
               className='mx-auto bg-slate-300  object-cover object-top'
-              src={`https://imagedelivery.net/LWMO1sS6WZWolJI0z1rgvA/${data.product.image}/public`}
-              alt={data.product.name}
+              src={`https://imagedelivery.net/LWMO1sS6WZWolJI0z1rgvA/${product.image}/public`}
+              alt={product.name}
             />
           </div>
           <div className='flex cursor-pointer items-center space-x-3 border-t border-b py-3'>
@@ -67,20 +70,20 @@ const ItemDetail: NextPage = () => {
               width={48}
               height={48}
               className='h-12 w-12 rounded-full bg-slate-300'
-              src={`https://imagedelivery.net/LWMO1sS6WZWolJI0z1rgvA/${data.product.user.avatar}/public`}
+              src={`https://imagedelivery.net/LWMO1sS6WZWolJI0z1rgvA/${product.user.avatar}/public`}
               alt='사용자 프로필 이미지'
             />
             <div>
-              <p className='text-sm font-medium text-gray-700'>{data.product.user.name}</p>
+              <p className='text-sm font-medium text-gray-700'>{product.user.name}</p>
               <Link href={`/profile/${data.product.user.id}`}>
                 <p className='text-xs font-medium text-gray-500'>View profile &rarr;</p>
               </Link>
             </div>
           </div>
           <div className='mt-5'>
-            <h2 className='text-2xl font-bold text-gray-900'>{data.product.name}</h2>
-            <span className='mt-3 block text-xl text-gray-900'>${data.product.price}</span>
-            <p className=' my-6 text-gray-700'>{data.product.description}</p>
+            <h2 className='text-2xl font-bold text-gray-900'>{product.name}</h2>
+            <span className='mt-3 block text-xl text-gray-900'>${product.price}</span>
+            <p className=' my-6 text-gray-700'>{product.description}</p>
             <div className='flex items-center justify-between space-x-2'>
               <Button large text='Talk to seller' onClick={clickTalk} />
               <button
@@ -94,7 +97,7 @@ const ItemDetail: NextPage = () => {
                 <svg
                   className='h-6 w-6 '
                   xmlns='http://www.w3.org/2000/svg'
-                  fill={data?.isLiked ? 'currentColor' : 'none'}
+                  fill={isLiked ? 'currentColor' : 'none'}
                   viewBox='0 0 24 24'
                   stroke='currentColor'
                   aria-hidden='true'>
@@ -112,7 +115,7 @@ const ItemDetail: NextPage = () => {
         <div>
           <h2 className='text-2xl font-bold text-gray-900'>Similar items</h2>
           <div className=' mt-6 grid grid-cols-2 gap-4'>
-            {data.relatedProducts.map((product) => (
+            {relatedProducts.map((product) => (
               <Link href={`/items/${product.id}`} key={product.id}>
                 <div className='mb-4 h-56 w-full bg-slate-300' />
                 <h3 className='-mb-1 text-gray-700'>{product.name}</h3>
@@ -124,5 +127,63 @@ const ItemDetail: NextPage = () => {
       </div>
     </Layout>
   );
+};
+
+export const getStaticPaths: GetStaticPaths = () => {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  };
+};
+
+export const getStaticProps: GetStaticProps = async (ctx) => {
+  if (!ctx?.params?.id) {
+    return {
+      props: {},
+    };
+  }
+
+  const product = await client.product.findUnique({
+    where: {
+      id: +ctx?.params.id.toString(),
+    },
+    include: {
+      user: {
+        select: {
+          id: true,
+          name: true,
+          avatar: true,
+        },
+      },
+    },
+  });
+
+  const terms = product?.name.split(' ').map((word) => ({
+    name: {
+      contains: word,
+    },
+  }));
+
+  const isLiked = false;
+
+  const relatedProducts = await client.product.findMany({
+    where: {
+      OR: terms,
+      AND: {
+        id: {
+          not: product?.id,
+        },
+      },
+    },
+    take: 4,
+  });
+
+  return {
+    props: {
+      product: JSON.parse(JSON.stringify(product)),
+      relatedProducts: JSON.parse(JSON.stringify(relatedProducts)),
+      isLiked: JSON.parse(JSON.stringify(isLiked)),
+    },
+  };
 };
 export default ItemDetail;
