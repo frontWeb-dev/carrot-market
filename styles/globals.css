@@ -1,0 +1,6 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.blog-post-content h1 {
+  @apply mb-5 text-2xl font-bold;
+}

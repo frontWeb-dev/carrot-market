@@ -1,4 +1,4 @@
-import '@styles/globals.scss';
+import '@styles/globals.css';
 import { SWRConfig } from 'swr';
 import type { AppProps } from 'next/app';
 import { User } from '@prisma/client';

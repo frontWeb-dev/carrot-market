@@ -5,7 +5,6 @@ import useSWR, { SWRConfig } from 'swr';
 import { FloatingButton, Items, Layout } from '@components';
 import { Product } from '@prisma/client';
 import client from '@libs/server/client';
-import { UserProps } from '@pages/profile';
 
 export interface ProductWithCount extends Product {
   _count: {
